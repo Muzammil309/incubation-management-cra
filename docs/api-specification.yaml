@@ -1,0 +1,1047 @@
+openapi: 3.0.3
+info:
+  title: Incubation Management Platform API
+  description: |
+    Enterprise-grade API for startup incubator and accelerator management.
+    
+    ## Authentication
+    This API uses JWT Bearer tokens for authentication. Include the token in the Authorization header:
+    ```
+    Authorization: Bearer <your-jwt-token>
+    ```
+    
+    ## Rate Limiting
+    - 1000 requests per hour for authenticated users
+    - 100 requests per hour for unauthenticated users
+    
+    ## Multi-tenancy
+    All endpoints are scoped to the authenticated user's organization.
+    
+    ## Error Handling
+    The API uses standard HTTP status codes and returns detailed error messages in JSON format.
+  version: 1.0.0
+  contact:
+    name: API Support
+    email: api-support@incubation-platform.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: https://api.incubation-platform.com/v1
+    description: Production server
+  - url: https://staging-api.incubation-platform.com/v1
+    description: Staging server
+  - url: http://localhost:8000/api/v1
+    description: Development server
+
+security:
+  - BearerAuth: []
+
+paths:
+  # Authentication Endpoints
+  /auth/login:
+    post:
+      tags: [Authentication]
+      summary: User login
+      description: Authenticate user with email and password
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: user@example.com
+                password:
+                  type: string
+                  format: password
+                  example: securePassword123
+                remember_me:
+                  type: boolean
+                  default: false
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access_token:
+                    type: string
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+                  refresh_token:
+                    type: string
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+                  token_type:
+                    type: string
+                    example: Bearer
+                  expires_in:
+                    type: integer
+                    example: 3600
+                  user:
+                    $ref: '#/components/schemas/User'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+
+  /auth/refresh:
+    post:
+      tags: [Authentication]
+      summary: Refresh access token
+      description: Get a new access token using refresh token
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [refresh_token]
+              properties:
+                refresh_token:
+                  type: string
+      responses:
+        '200':
+          description: Token refreshed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access_token:
+                    type: string
+                  expires_in:
+                    type: integer
+
+  /auth/logout:
+    post:
+      tags: [Authentication]
+      summary: User logout
+      description: Invalidate current session and tokens
+      responses:
+        '200':
+          description: Logout successful
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  # User Management
+  /users:
+    get:
+      tags: [Users]
+      summary: List users
+      description: Get paginated list of users in organization
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/Limit'
+        - name: role
+          in: query
+          schema:
+            type: string
+            enum: [admin, program_manager, mentor, investor, founder, support]
+        - name: search
+          in: query
+          schema:
+            type: string
+          description: Search by name or email
+      responses:
+        '200':
+          description: Users retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/User'
+                  meta:
+                    $ref: '#/components/schemas/PaginationMeta'
+
+    post:
+      tags: [Users]
+      summary: Create user
+      description: Create a new user in the organization
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserRequest'
+      responses:
+        '201':
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+
+  /users/{userId}:
+    get:
+      tags: [Users]
+      summary: Get user
+      description: Get user details by ID
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+      responses:
+        '200':
+          description: User retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    put:
+      tags: [Users]
+      summary: Update user
+      description: Update user details
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserRequest'
+      responses:
+        '200':
+          description: User updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+
+    delete:
+      tags: [Users]
+      summary: Delete user
+      description: Soft delete user (GDPR compliant)
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+      responses:
+        '204':
+          description: User deleted successfully
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  # Cohort Management
+  /cohorts:
+    get:
+      tags: [Cohorts]
+      summary: List cohorts
+      description: Get paginated list of cohorts
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/Limit'
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [planning, active, completed, cancelled]
+        - name: program_id
+          in: query
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Cohorts retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Cohort'
+                  meta:
+                    $ref: '#/components/schemas/PaginationMeta'
+
+    post:
+      tags: [Cohorts]
+      summary: Create cohort
+      description: Create a new cohort
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCohortRequest'
+      responses:
+        '201':
+          description: Cohort created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cohort'
+
+  /cohorts/{cohortId}:
+    get:
+      tags: [Cohorts]
+      summary: Get cohort
+      description: Get cohort details with startups
+      parameters:
+        - $ref: '#/components/parameters/CohortId'
+      responses:
+        '200':
+          description: Cohort retrieved successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Cohort'
+                  - type: object
+                    properties:
+                      startups:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Startup'
+
+  # Startup Management
+  /startups:
+    get:
+      tags: [Startups]
+      summary: List startups
+      description: Get paginated list of startups
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/Limit'
+        - name: cohort_id
+          in: query
+          schema:
+            type: string
+            format: uuid
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [active, graduated, withdrawn, suspended]
+        - name: industry
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Startups retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Startup'
+                  meta:
+                    $ref: '#/components/schemas/PaginationMeta'
+
+    post:
+      tags: [Startups]
+      summary: Create startup
+      description: Create a new startup
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateStartupRequest'
+      responses:
+        '201':
+          description: Startup created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Startup'
+
+  /startups/{startupId}:
+    get:
+      tags: [Startups]
+      summary: Get startup
+      description: Get detailed startup information
+      parameters:
+        - $ref: '#/components/parameters/StartupId'
+      responses:
+        '200':
+          description: Startup retrieved successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Startup'
+                  - type: object
+                    properties:
+                      members:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/StartupMember'
+                      latest_kpis:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/StartupKPI'
+
+  # KPI Management
+  /startups/{startupId}/kpis:
+    get:
+      tags: [KPIs]
+      summary: Get startup KPIs
+      description: Get KPI history for a startup
+      parameters:
+        - $ref: '#/components/parameters/StartupId'
+        - name: period_start
+          in: query
+          schema:
+            type: string
+            format: date
+        - name: period_end
+          in: query
+          schema:
+            type: string
+            format: date
+        - name: kpi_definition_id
+          in: query
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: KPIs retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StartupKPI'
+
+    post:
+      tags: [KPIs]
+      summary: Submit KPIs
+      description: Submit KPI data for a startup
+      parameters:
+        - $ref: '#/components/parameters/StartupId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/CreateKPIRequest'
+      responses:
+        '201':
+          description: KPIs submitted successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StartupKPI'
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  parameters:
+    Page:
+      name: page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+    Limit:
+      name: limit
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 20
+    UserId:
+      name: userId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    CohortId:
+      name: cohortId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    StartupId:
+      name: startupId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        email:
+          type: string
+          format: email
+        first_name:
+          type: string
+        last_name:
+          type: string
+        avatar_url:
+          type: string
+          format: uri
+        role:
+          type: string
+          enum: [admin, program_manager, mentor, investor, founder, support]
+        is_active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    CreateUserRequest:
+      type: object
+      required: [email, first_name, last_name, role]
+      properties:
+        email:
+          type: string
+          format: email
+        first_name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        last_name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        role:
+          type: string
+          enum: [admin, program_manager, mentor, investor, founder, support]
+        phone:
+          type: string
+        send_invitation:
+          type: boolean
+          default: true
+
+    UpdateUserRequest:
+      type: object
+      properties:
+        first_name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        last_name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        phone:
+          type: string
+        avatar_url:
+          type: string
+          format: uri
+        is_active:
+          type: boolean
+
+    Cohort:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        program_id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+        application_deadline:
+          type: string
+          format: date
+        max_startups:
+          type: integer
+        status:
+          type: string
+          enum: [planning, active, completed, cancelled]
+        created_at:
+          type: string
+          format: date-time
+
+    CreateCohortRequest:
+      type: object
+      required: [program_id, name, start_date, end_date]
+      properties:
+        program_id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          minLength: 1
+          maxLength: 255
+        description:
+          type: string
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+        application_deadline:
+          type: string
+          format: date
+        max_startups:
+          type: integer
+          minimum: 1
+          maximum: 100
+
+    Startup:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        cohort_id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+        website_url:
+          type: string
+          format: uri
+        logo_url:
+          type: string
+          format: uri
+        industry:
+          type: string
+        stage:
+          type: string
+        founded_date:
+          type: string
+          format: date
+        headquarters_location:
+          type: string
+        employee_count:
+          type: integer
+        status:
+          type: string
+          enum: [active, graduated, withdrawn, suspended]
+        created_at:
+          type: string
+          format: date-time
+
+    CreateStartupRequest:
+      type: object
+      required: [name, industry]
+      properties:
+        cohort_id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          minLength: 1
+          maxLength: 255
+        description:
+          type: string
+        website_url:
+          type: string
+          format: uri
+        industry:
+          type: string
+        stage:
+          type: string
+        founded_date:
+          type: string
+          format: date
+        headquarters_location:
+          type: string
+
+    StartupMember:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        startup_id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        role:
+          type: string
+        is_founder:
+          type: boolean
+        equity_percentage:
+          type: number
+          format: float
+
+    StartupKPI:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        startup_id:
+          type: string
+          format: uuid
+        kpi_definition:
+          $ref: '#/components/schemas/KPIDefinition'
+        value:
+          type: number
+          format: float
+        reporting_period:
+          type: string
+          format: date
+        verified_at:
+          type: string
+          format: date-time
+        created_at:
+          type: string
+          format: date-time
+
+    KPIDefinition:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+        data_type:
+          type: string
+          enum: [number, currency, percentage, date]
+        unit:
+          type: string
+        category:
+          type: string
+
+    CreateKPIRequest:
+      type: object
+      required: [kpi_definition_id, value, reporting_period]
+      properties:
+        kpi_definition_id:
+          type: string
+          format: uuid
+        value:
+          type: number
+          format: float
+        reporting_period:
+          type: string
+          format: date
+        notes:
+          type: string
+
+    PaginationMeta:
+      type: object
+      properties:
+        current_page:
+          type: integer
+        per_page:
+          type: integer
+        total:
+          type: integer
+        last_page:
+          type: integer
+        from:
+          type: integer
+        to:
+          type: integer
+
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type: string
+        details:
+          type: object
+
+    ValidationError:
+      type: object
+      properties:
+        message:
+          type: string
+        errors:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+
+  responses:
+    Unauthorized:
+      description: Authentication required
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            message: "Authentication required"
+            code: "UNAUTHORIZED"
+
+    Forbidden:
+      description: Insufficient permissions
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            message: "Insufficient permissions"
+            code: "FORBIDDEN"
+
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            message: "Resource not found"
+            code: "NOT_FOUND"
+
+    ValidationError:
+      description: Validation error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationError'
+          example:
+            message: "Validation failed"
+            errors:
+              email: ["The email field is required"]
+              name: ["The name must be at least 1 character"]
+
+    RateLimitExceeded:
+      description: Rate limit exceeded
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            message: "Rate limit exceeded"
+            code: "RATE_LIMIT_EXCEEDED"
+
+# Additional Endpoints (Mentor Management)
+  /mentors:
+    get:
+      tags: [Mentors]
+      summary: List mentors
+      description: Get paginated list of available mentors
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/Limit'
+        - name: expertise_area
+          in: query
+          schema:
+            type: string
+        - name: industry
+          in: query
+          schema:
+            type: string
+        - name: available_only
+          in: query
+          schema:
+            type: boolean
+            default: true
+      responses:
+        '200':
+          description: Mentors retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Mentor'
+                  meta:
+                    $ref: '#/components/schemas/PaginationMeta'
+
+  /mentors/{mentorId}/sessions:
+    get:
+      tags: [Mentors]
+      summary: Get mentor sessions
+      description: Get sessions for a specific mentor
+      parameters:
+        - name: mentorId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [scheduled, completed, cancelled]
+        - name: date_from
+          in: query
+          schema:
+            type: string
+            format: date
+        - name: date_to
+          in: query
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: Sessions retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MentorSession'
+
+    post:
+      tags: [Mentors]
+      summary: Book mentor session
+      description: Book a session with a mentor
+      parameters:
+        - name: mentorId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookSessionRequest'
+      responses:
+        '201':
+          description: Session booked successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MentorSession'
+
+# Additional Schemas for Mentors
+    Mentor:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        user:
+          $ref: '#/components/schemas/User'
+        bio:
+          type: string
+        expertise_areas:
+          type: array
+          items:
+            type: string
+        industries:
+          type: array
+          items:
+            type: string
+        years_experience:
+          type: integer
+        hourly_rate:
+          type: number
+          format: float
+        rating:
+          type: number
+          format: float
+        total_sessions:
+          type: integer
+        is_available:
+          type: boolean
+
+    MentorSession:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        mentor:
+          $ref: '#/components/schemas/Mentor'
+        startup:
+          $ref: '#/components/schemas/Startup'
+        title:
+          type: string
+        description:
+          type: string
+        scheduled_at:
+          type: string
+          format: date-time
+        duration_minutes:
+          type: integer
+        meeting_url:
+          type: string
+          format: uri
+        status:
+          type: string
+          enum: [scheduled, completed, cancelled, no_show]
+        notes:
+          type: string
+        rating:
+          type: integer
+          minimum: 1
+          maximum: 5
+
+    BookSessionRequest:
+      type: object
+      required: [startup_id, title, scheduled_at]
+      properties:
+        startup_id:
+          type: string
+          format: uuid
+        title:
+          type: string
+          minLength: 1
+          maxLength: 255
+        description:
+          type: string
+        scheduled_at:
+          type: string
+          format: date-time
+        duration_minutes:
+          type: integer
+          minimum: 15
+          maximum: 180
+          default: 60
