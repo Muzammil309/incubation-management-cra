@@ -3,11 +3,13 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
-import DashboardLayout from './layouts/DashboardLayout';
+import SoftDashboardLayout from './layouts/SoftDashboardLayout';
 import LoginPage from './pages/auth/LoginPage';
 import SignUpPage from './pages/auth/SignUpPage';
 import ErrorBoundary from './components/ui/ErrorBoundary';
-import SoftDashboard from './components/dashboard/SoftDashboard';
+import IncubationDashboard from './components/dashboard/IncubationDashboard';
+import StartupsPage from './pages/StartupsPage';
+import MentorsPage from './pages/MentorsPage';
 
 // Create a client
 const queryClient = new QueryClient({
@@ -88,14 +90,14 @@ function App() {
                 path="/"
                 element={
                   <ProtectedRoute>
-                    <DashboardLayout />
+                    <SoftDashboardLayout />
                   </ProtectedRoute>
                 }
               >
                 <Route index element={<Navigate to="/dashboard" replace />} />
-                <Route path="dashboard" element={<SoftDashboard />} />
-                <Route path="startups" element={<div>Startups Page (Coming Soon)</div>} />
-                <Route path="mentors" element={<div>Mentors Page (Coming Soon)</div>} />
+                <Route path="dashboard" element={<IncubationDashboard />} />
+                <Route path="startups" element={<StartupsPage />} />
+                <Route path="mentors" element={<MentorsPage />} />
                 <Route path="analytics" element={<div>Analytics Page (Coming Soon)</div>} />
                 <Route path="events" element={<div>Events Page (Coming Soon)</div>} />
                 <Route path="investments" element={<div>Investments Page (Coming Soon)</div>} />
