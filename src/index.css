@@ -2,86 +2,157 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
 
 @layer base {
   body {
-    font-family: 'Inter', system-ui, sans-serif;
+    font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+    background-color: #f8f9fa;
+    color: #67748e;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+
+  * {
+    box-sizing: border-box;
   }
 }
 
 @layer components {
-  .btn-primary {
-    @apply bg-primary-600 hover:bg-primary-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200;
+  /* Soft UI Buttons */
+  .btn-soft-primary {
+    @apply bg-gradient-primary text-white font-bold text-sm uppercase py-3 px-6 rounded-lg shadow-soft-button hover:shadow-soft-button-hover transition-all duration-300 transform hover:-translate-y-0.5;
   }
-  
-  .btn-secondary {
-    @apply bg-secondary-100 hover:bg-secondary-200 text-secondary-700 font-medium py-2 px-4 rounded-lg transition-colors duration-200;
+
+  .btn-soft-secondary {
+    @apply bg-gradient-secondary text-white font-bold text-sm uppercase py-3 px-6 rounded-lg shadow-soft-button hover:shadow-soft-button-hover transition-all duration-300 transform hover:-translate-y-0.5;
   }
-  
-  .card {
-    @apply bg-white rounded-xl shadow-sm border border-secondary-200 p-6;
+
+  .btn-soft-info {
+    @apply bg-gradient-info text-white font-bold text-sm uppercase py-3 px-6 rounded-lg shadow-soft-button hover:shadow-soft-button-hover transition-all duration-300 transform hover:-translate-y-0.5;
   }
-  
-  .input-field {
-    @apply w-full px-3 py-2 border border-secondary-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent;
+
+  .btn-soft-success {
+    @apply bg-gradient-success text-white font-bold text-sm uppercase py-3 px-6 rounded-lg shadow-soft-button hover:shadow-soft-button-hover transition-all duration-300 transform hover:-translate-y-0.5;
   }
-  
-  .sidebar-nav {
-    @apply flex flex-col space-y-1;
+
+  .btn-soft-warning {
+    @apply bg-gradient-warning text-white font-bold text-sm uppercase py-3 px-6 rounded-lg shadow-soft-button hover:shadow-soft-button-hover transition-all duration-300 transform hover:-translate-y-0.5;
   }
-  
-  .sidebar-nav-item {
-    @apply flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200;
+
+  .btn-soft-error {
+    @apply bg-gradient-error text-white font-bold text-sm uppercase py-3 px-6 rounded-lg shadow-soft-button hover:shadow-soft-button-hover transition-all duration-300 transform hover:-translate-y-0.5;
   }
-  
-  .sidebar-nav-item.active {
-    @apply bg-primary-100 text-primary-700;
+
+  .btn-soft-outline {
+    @apply bg-transparent border-2 border-primary-500 text-primary-500 font-bold text-sm uppercase py-3 px-6 rounded-lg hover:bg-primary-500 hover:text-white transition-all duration-300;
   }
-  
-  .sidebar-nav-item:hover {
-    @apply bg-secondary-100 text-secondary-700;
+
+  /* Soft UI Cards */
+  .card-soft {
+    @apply bg-white rounded-2xl shadow-soft-lg border-0 p-6 transition-all duration-300 hover:shadow-soft-xl;
   }
-  
-  .dashboard-grid {
-    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6;
+
+  .card-soft-gradient {
+    @apply bg-gradient-primary rounded-2xl shadow-soft-lg border-0 p-6 text-white transition-all duration-300 hover:shadow-soft-xl;
   }
-  
-  .stat-card {
-    @apply bg-white rounded-xl shadow-sm border border-secondary-200 p-6 hover:shadow-md transition-shadow duration-200;
+
+  .card-soft-blur {
+    @apply bg-white/80 backdrop-blur-soft rounded-2xl shadow-soft-lg border border-white/20 p-6 transition-all duration-300 hover:shadow-soft-xl;
   }
-  
-  .table-container {
-    @apply overflow-x-auto bg-white rounded-xl shadow-sm border border-secondary-200;
+
+  /* Soft UI Input Fields */
+  .input-soft {
+    @apply w-full px-4 py-3 bg-white border border-light-300 rounded-lg text-dark-700 placeholder-secondary-400 focus:outline-none focus:shadow-soft-input-focus focus:border-info-500 transition-all duration-300;
   }
-  
-  .table-header {
-    @apply bg-secondary-50 px-6 py-3 border-b border-secondary-200;
+
+  .input-soft-error {
+    @apply w-full px-4 py-3 bg-white border border-error-500 rounded-lg text-dark-700 placeholder-secondary-400 focus:outline-none focus:shadow-soft-input-error focus:border-error-500 transition-all duration-300;
   }
-  
-  .table-row {
-    @apply border-b border-secondary-100 hover:bg-secondary-50 transition-colors duration-150;
+
+  .input-soft-success {
+    @apply w-full px-4 py-3 bg-white border border-success-500 rounded-lg text-dark-700 placeholder-secondary-400 focus:outline-none focus:shadow-soft-input-success focus:border-success-500 transition-all duration-300;
   }
-  
-  .badge {
-    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+
+  /* Soft UI Navigation */
+  .sidebar-soft {
+    @apply bg-white rounded-2xl shadow-soft-lg p-4 m-4;
   }
-  
-  .badge-success {
-    @apply bg-success-100 text-success-800;
+
+  .sidebar-nav-soft {
+    @apply flex flex-col space-y-2;
   }
-  
-  .badge-warning {
-    @apply bg-warning-100 text-warning-800;
+
+  .sidebar-nav-item-soft {
+    @apply flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300 text-secondary-600 hover:bg-light-200;
   }
-  
-  .badge-error {
-    @apply bg-error-100 text-error-800;
+
+  .sidebar-nav-item-soft.active {
+    @apply bg-gradient-primary text-white shadow-soft-button;
   }
-  
-  .badge-info {
-    @apply bg-primary-100 text-primary-800;
+
+  /* Soft UI Dashboard Grid */
+  .dashboard-grid-soft {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 p-6;
+  }
+
+  /* Soft UI Stat Cards */
+  .stat-card-soft {
+    @apply bg-white rounded-2xl shadow-soft-lg p-6 transition-all duration-300 hover:shadow-soft-xl hover:-translate-y-1;
+  }
+
+  .stat-card-soft-gradient {
+    @apply bg-gradient-primary text-white rounded-2xl shadow-soft-lg p-6 transition-all duration-300 hover:shadow-soft-xl hover:-translate-y-1;
+  }
+
+  /* Soft UI Tables */
+  .table-soft {
+    @apply bg-white rounded-2xl shadow-soft-lg overflow-hidden;
+  }
+
+  .table-header-soft {
+    @apply bg-light-100 px-6 py-4 border-b border-light-200;
+  }
+
+  .table-row-soft {
+    @apply border-b border-light-200 hover:bg-light-100 transition-colors duration-200;
+  }
+
+  /* Soft UI Badges */
+  .badge-soft {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide;
+  }
+
+  .badge-soft-primary {
+    @apply badge-soft bg-primary-100 text-primary-600;
+  }
+
+  .badge-soft-success {
+    @apply badge-soft bg-success-100 text-success-600;
+  }
+
+  .badge-soft-warning {
+    @apply badge-soft bg-warning-100 text-warning-600;
+  }
+
+  .badge-soft-error {
+    @apply badge-soft bg-error-100 text-error-600;
+  }
+
+  .badge-soft-info {
+    @apply badge-soft bg-info-100 text-info-600;
+  }
+
+  /* Soft UI Typography */
+  .heading-soft {
+    @apply font-medium text-dark-700;
+  }
+
+  .text-soft {
+    @apply text-secondary-500;
+  }
+
+  .text-soft-muted {
+    @apply text-secondary-400;
   }
 }

@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
-import { 
-  Menu, 
-  X, 
-  Home, 
-  Users, 
-  Building2, 
-  TrendingUp, 
-  Calendar, 
+import {
+  Menu,
+  X,
+  Home,
+  Users,
+  Building2,
+  TrendingUp,
+  Calendar,
   DollarSign,
   Settings,
   LogOut
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
-import Button from '../components/ui/Button';
+import SoftButton from '../components/ui/SoftButton';
 
 interface SidebarItem {
   name: string;
@@ -43,11 +43,11 @@ const DashboardLayout: React.FC = () => {
   };
 
   return (
-    <div className="h-screen flex overflow-hidden bg-secondary-50">
+    <div className="h-screen flex overflow-hidden bg-background-default">
       {/* Mobile sidebar */}
       <div className={`fixed inset-0 flex z-40 md:hidden ${sidebarOpen ? '' : 'hidden'}`}>
-        <div className="fixed inset-0 bg-secondary-600 bg-opacity-75" onClick={() => setSidebarOpen(false)} />
-        <div className="relative flex-1 flex flex-col max-w-xs w-full bg-white">
+        <div className="fixed inset-0 bg-dark-700 bg-opacity-75" onClick={() => setSidebarOpen(false)} />
+        <div className="relative flex-1 flex flex-col max-w-xs w-full">
           <div className="absolute top-0 right-0 -mr-12 pt-2">
             <button
               className="ml-1 flex items-center justify-center h-10 w-10 rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
@@ -70,15 +70,15 @@ const DashboardLayout: React.FC = () => {
       {/* Main content */}
       <div className="flex flex-col w-0 flex-1 overflow-hidden">
         {/* Top navigation */}
-        <div className="relative z-10 flex-shrink-0 flex h-16 bg-white shadow">
+        <div className="relative z-10 flex-shrink-0 flex h-16 bg-white shadow-soft-navbar rounded-b-2xl mx-4 mt-4">
           <button
-            className="px-4 border-r border-secondary-200 text-secondary-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-500 md:hidden"
+            className="px-4 border-r border-light-200 text-secondary-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-500 md:hidden rounded-l-2xl"
             onClick={() => setSidebarOpen(true)}
           >
             <Menu className="h-6 w-6" />
           </button>
-          
-          <div className="flex-1 px-4 flex justify-between">
+
+          <div className="flex-1 px-4 flex justify-between items-center">
             <div className="flex-1 flex">
               <div className="w-full flex md:ml-0">
                 <div className="relative w-full text-secondary-400 focus-within:text-secondary-600">
@@ -86,20 +86,20 @@ const DashboardLayout: React.FC = () => {
                 </div>
               </div>
             </div>
-            
+
             <div className="ml-4 flex items-center md:ml-6">
               <div className="flex items-center space-x-4">
-                <span className="text-sm text-secondary-700">
+                <span className="text-sm font-medium text-dark-700">
                   {user?.email}
                 </span>
-                <Button
-                  variant="ghost"
+                <SoftButton
+                  variant="outline"
                   size="sm"
-                  icon={LogOut}
                   onClick={handleSignOut}
                 >
+                  <LogOut className="h-4 w-4 mr-2" />
                   Sign Out
-                </Button>
+                </SoftButton>
               </div>
             </div>
           </div>
@@ -107,11 +107,7 @@ const DashboardLayout: React.FC = () => {
 
         {/* Page content */}
         <main className="flex-1 relative overflow-y-auto focus:outline-none">
-          <div className="py-6">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
-              <Outlet />
-            </div>
-          </div>
+          <Outlet />
         </main>
       </div>
     </div>
@@ -123,15 +119,18 @@ const SidebarContent: React.FC = () => {
   const currentPath = window.location.pathname;
 
   return (
-    <div className="flex flex-col h-0 flex-1 border-r border-secondary-200 bg-white">
-      <div className="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
-        <div className="flex items-center flex-shrink-0 px-4">
-          <h1 className="text-xl font-bold text-primary-600">
+    <div className="sidebar-soft h-full">
+      <div className="flex-1 flex flex-col overflow-y-auto">
+        <div className="flex items-center flex-shrink-0 px-4 mb-6">
+          <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center mr-3">
+            <span className="text-white font-bold text-lg">I</span>
+          </div>
+          <h1 className="text-lg font-bold text-dark-700">
             Incubation Platform
           </h1>
         </div>
-        
-        <nav className="mt-5 flex-1 px-2 space-y-1">
+
+        <nav className="sidebar-nav-soft">
           {sidebarItems.map((item) => {
             const isActive = currentPath === item.href;
             return (
@@ -139,7 +138,7 @@ const SidebarContent: React.FC = () => {
                 key={item.name}
                 onClick={() => navigate(item.href)}
                 className={`
-                  sidebar-nav-item w-full text-left
+                  sidebar-nav-item-soft w-full text-left
                   ${isActive ? 'active' : ''}
                 `}
               >

@@ -7,6 +7,7 @@ import DashboardLayout from './layouts/DashboardLayout';
 import LoginPage from './pages/auth/LoginPage';
 import SignUpPage from './pages/auth/SignUpPage';
 import ErrorBoundary from './components/ui/ErrorBoundary';
+import SoftDashboard from './components/dashboard/SoftDashboard';
 
 // Create a client
 const queryClient = new QueryClient({
@@ -92,27 +93,7 @@ function App() {
                 }
               >
                 <Route index element={<Navigate to="/dashboard" replace />} />
-                <Route path="dashboard" element={
-                  <div className="p-6">
-                    <h1 className="text-3xl font-bold text-gray-900 mb-6">🎉 SUCCESS! Incubation Platform Working!</h1>
-                    <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">
-                      <p className="font-bold">✅ Authentication System Fixed</p>
-                      <p className="font-bold">✅ Routing System Fixed</p>
-                      <p className="font-bold">✅ Dashboard Loading Successfully</p>
-                      <p className="font-bold">✅ Working in Correct Directory</p>
-                    </div>
-                    <div className="bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded mb-6">
-                      <p className="font-bold">Next Steps:</p>
-                      <ul className="list-disc list-inside mt-2">
-                        <li>Integrate WowDash UI components</li>
-                        <li>Implement role-based dashboard content</li>
-                        <li>Add real-time features with Supabase</li>
-                        <li>Create sample data for testing</li>
-                      </ul>
-                    </div>
-                    <p className="text-gray-600">The incubation management platform foundation is now working correctly!</p>
-                  </div>
-                } />
+                <Route path="dashboard" element={<SoftDashboard />} />
                 <Route path="startups" element={<div>Startups Page (Coming Soon)</div>} />
                 <Route path="mentors" element={<div>Mentors Page (Coming Soon)</div>} />
                 <Route path="analytics" element={<div>Analytics Page (Coming Soon)</div>} />
