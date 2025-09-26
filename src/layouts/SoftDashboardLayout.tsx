@@ -3,11 +3,9 @@ import { Outlet } from 'react-router-dom';
 import { Search, Bell, Settings, User, Menu, X } from 'lucide-react';
 import SoftSidebar from '../components/layout/SoftSidebar';
 import SoftButton from '../components/ui/SoftButton';
-import { useAuth } from '../contexts/AuthContext';
 
 const SoftDashboardLayout: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  // const { } = useAuth();
 
   return (
     <div className="min-h-screen bg-background-default flex">
