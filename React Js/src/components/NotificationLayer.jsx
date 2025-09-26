@@ -1,5 +1,18 @@
 import React from 'react'
 
+/**
+ * SECURITY NOTICE:
+ * This component has been updated to use environment variables for all API keys and secrets.
+ *
+ * CRITICAL SECURITY ACTIONS REQUIRED:
+ * 1. IMMEDIATELY rotate all Firebase and Google API keys that were previously exposed
+ * 2. Create a .env file with your new API keys (see .env.example)
+ * 3. Never commit .env files to version control
+ * 4. Use different keys for development, staging, and production environments
+ *
+ * For key rotation instructions, see: SECURITY_INCIDENT_RESPONSE.md
+ */
+
 const NotificationLayer = () => {
     return (
         <div className="card h-100 p-0 radius-12 overflow-hidden">
@@ -19,7 +32,7 @@ const NotificationLayer = () => {
                                     className="form-control radius-8"
                                     id="firebaseSecretKey"
                                     placeholder="Firebase secret key"
-                                    defaultValue="AAAAxGHw9lE:APA91bHKj6OsrD6EhnG5p26oTiQkXvOxTZwZEfVuuuipyUSNM-a8NB_CugVwfvvaosOvWgFAhQJOLMvxtv7e3Sw8DYpaWKwJIN3kjyIPoNRAe541sBz3x7E6sXZkA-ebueqnQiqNtbdP"
+                                    defaultValue={process.env.REACT_APP_FIREBASE_SERVER_KEY || ""}
                                 />
                             </div>
                         </div>
@@ -36,7 +49,7 @@ const NotificationLayer = () => {
                                     className="form-control radius-8"
                                     id="firebasePublicVapidKey"
                                     placeholder="Firebase public vapid key (key pair)"
-                                    defaultValue="BKAvKJbnB3QATdp8n1aUo_uhoNK3exVKLVzy7MP8VKydjjzthdlAWdlku6LQISxm4zA7dWoRACI9AHymf4V64kA"
+                                    defaultValue={process.env.REACT_APP_FIREBASE_VAPID_KEY || ""}
                                 />
                             </div>
                         </div>
@@ -53,7 +66,7 @@ const NotificationLayer = () => {
                                     className="form-control radius-8"
                                     id="firebaseAPIKey"
                                     placeholder="Firebase  API Key"
-                                    defaultValue="AIzaSyDg1xBSwmHKV0usIKxTFL5a6fFTb4s3XVM"
+                                    defaultValue={process.env.REACT_APP_FIREBASE_API_KEY || ""}
                                 />
                             </div>
                         </div>
@@ -70,7 +83,7 @@ const NotificationLayer = () => {
                                     className="form-control radius-8"
                                     id="firebaseAuthDomain"
                                     placeholder="Firebase  AUTH Domain"
-                                    defaultValue="wowdash.firebaseapp.com"
+                                    defaultValue={process.env.REACT_APP_FIREBASE_AUTH_DOMAIN || ""}
                                 />
                             </div>
                         </div>
@@ -87,7 +100,7 @@ const NotificationLayer = () => {
                                     className="form-control radius-8"
                                     id="firebaseProjectID"
                                     placeholder="Firebase Project ID"
-                                    defaultValue="wowdash.com"
+                                    defaultValue={process.env.REACT_APP_FIREBASE_PROJECT_ID || ""}
                                 />
                             </div>
                         </div>
@@ -104,7 +117,7 @@ const NotificationLayer = () => {
                                     className="form-control radius-8"
                                     id="firebaseStorageBucket"
                                     placeholder="Firebase Storage Bucket"
-                                    defaultValue="wowdash.appsport.com"
+                                    defaultValue={process.env.REACT_APP_FIREBASE_STORAGE_BUCKET || ""}
                                 />
                             </div>
                         </div>
@@ -121,7 +134,7 @@ const NotificationLayer = () => {
                                     className="form-control radius-8"
                                     id="firebaseMessageSenderID"
                                     placeholder="Firebase  Message Sender ID"
-                                    defaultValue={52362145}
+                                    defaultValue={process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID || ""}
                                 />
                             </div>
                         </div>
@@ -138,7 +151,7 @@ const NotificationLayer = () => {
                                     className="form-control radius-8"
                                     id="firebaseAppID"
                                     placeholder="Firebase  App ID"
-                                    defaultValue="1:843456771665:web:ac1e3115e9e17ee1582a70"
+                                    defaultValue={process.env.REACT_APP_FIREBASE_APP_ID || ""}
                                 />
                             </div>
                         </div>
@@ -155,7 +168,7 @@ const NotificationLayer = () => {
                                     className="form-control radius-8"
                                     id="firebaseMeasurmentID"
                                     placeholder="Firebase  Measurement ID"
-                                    defaultValue="G-GSJPS921XW"
+                                    defaultValue={process.env.REACT_APP_FIREBASE_MEASUREMENT_ID || ""}
                                 />
                             </div>
                         </div>
