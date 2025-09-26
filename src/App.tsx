@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
+HEAD
 import DashboardLayout from './layouts/DashboardLayout';
 import LoginPage from './pages/auth/LoginPage';
 import SignUpPage from './pages/auth/SignUpPage';
@@ -14,6 +15,14 @@ import EventsPage from './pages/events/EventsPage';
 import InvestmentsPage from './pages/investments/InvestmentsPage';
 import SettingsPage from './pages/settings/SettingsPage';
 import ErrorBoundary from './components/ui/ErrorBoundary';
+import SoftDashboardLayout from './layouts/SoftDashboardLayout';
+import LoginPage from './pages/auth/LoginPage';
+import SignUpPage from './pages/auth/SignUpPage';
+import ErrorBoundary from './components/ui/ErrorBoundary';
+import IncubationDashboard from './components/dashboard/IncubationDashboard';
+import StartupsPage from './pages/StartupsPage';
+import MentorsPage from './pages/MentorsPage';
+259ea255fdfe3c8e21d47c6f6be62314bcbba36d
 
 // Create a client
 const queryClient = new QueryClient({
@@ -94,11 +103,16 @@ function App() {
                 path="/"
                 element={
                   <ProtectedRoute>
+<<<<<<< HEAD
                     <DashboardLayout />
+=======
+                    <SoftDashboardLayout />
+>>>>>>> 259ea255fdfe3c8e21d47c6f6be62314bcbba36d
                   </ProtectedRoute>
                 }
               >
                 <Route index element={<Navigate to="/dashboard" replace />} />
+<<<<<<< HEAD
                 <Route path="dashboard" element={<DashboardPage />} />
                 <Route path="startups" element={<StartupsPage />} />
                 <Route path="mentors" element={<MentorsPage />} />
@@ -106,6 +120,15 @@ function App() {
                 <Route path="events" element={<EventsPage />} />
                 <Route path="investments" element={<InvestmentsPage />} />
                 <Route path="settings" element={<SettingsPage />} />
+=======
+                <Route path="dashboard" element={<IncubationDashboard />} />
+                <Route path="startups" element={<StartupsPage />} />
+                <Route path="mentors" element={<MentorsPage />} />
+                <Route path="analytics" element={<div>Analytics Page (Coming Soon)</div>} />
+                <Route path="events" element={<div>Events Page (Coming Soon)</div>} />
+                <Route path="investments" element={<div>Investments Page (Coming Soon)</div>} />
+                <Route path="settings" element={<div>Settings Page (Coming Soon)</div>} />
+>>>>>>> 259ea255fdfe3c8e21d47c6f6be62314bcbba36d
               </Route>
 
               {/* Catch all route */}

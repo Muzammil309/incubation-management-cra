@@ -1,0 +1,158 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+@layer base {
+  body {
+    font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+    background-color: #f8f9fa;
+    color: #67748e;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+}
+
+@layer components {
+  /* Soft UI Buttons */
+  .btn-soft-primary {
+    @apply bg-gradient-primary text-white font-bold text-sm uppercase py-3 px-6 rounded-lg shadow-soft-button hover:shadow-soft-button-hover transition-all duration-300 transform hover:-translate-y-0.5;
+  }
+
+  .btn-soft-secondary {
+    @apply bg-gradient-secondary text-white font-bold text-sm uppercase py-3 px-6 rounded-lg shadow-soft-button hover:shadow-soft-button-hover transition-all duration-300 transform hover:-translate-y-0.5;
+  }
+
+  .btn-soft-info {
+    @apply bg-gradient-info text-white font-bold text-sm uppercase py-3 px-6 rounded-lg shadow-soft-button hover:shadow-soft-button-hover transition-all duration-300 transform hover:-translate-y-0.5;
+  }
+
+  .btn-soft-success {
+    @apply bg-gradient-success text-white font-bold text-sm uppercase py-3 px-6 rounded-lg shadow-soft-button hover:shadow-soft-button-hover transition-all duration-300 transform hover:-translate-y-0.5;
+  }
+
+  .btn-soft-warning {
+    @apply bg-gradient-warning text-white font-bold text-sm uppercase py-3 px-6 rounded-lg shadow-soft-button hover:shadow-soft-button-hover transition-all duration-300 transform hover:-translate-y-0.5;
+  }
+
+  .btn-soft-error {
+    @apply bg-gradient-error text-white font-bold text-sm uppercase py-3 px-6 rounded-lg shadow-soft-button hover:shadow-soft-button-hover transition-all duration-300 transform hover:-translate-y-0.5;
+  }
+
+  .btn-soft-outline {
+    @apply bg-transparent border-2 border-primary-500 text-primary-500 font-bold text-sm uppercase py-3 px-6 rounded-lg hover:bg-primary-500 hover:text-white transition-all duration-300;
+  }
+
+  /* Soft UI Cards */
+  .card-soft {
+    @apply bg-white rounded-2xl shadow-soft-lg border-0 p-6 transition-all duration-300 hover:shadow-soft-xl;
+  }
+
+  .card-soft-gradient {
+    @apply bg-gradient-primary rounded-2xl shadow-soft-lg border-0 p-6 text-white transition-all duration-300 hover:shadow-soft-xl;
+  }
+
+  .card-soft-blur {
+    @apply bg-white/80 backdrop-blur-soft rounded-2xl shadow-soft-lg border border-white/20 p-6 transition-all duration-300 hover:shadow-soft-xl;
+  }
+
+  /* Soft UI Input Fields */
+  .input-soft {
+    @apply w-full px-4 py-3 bg-white border border-light-300 rounded-lg text-dark-700 placeholder-secondary-400 focus:outline-none focus:shadow-soft-input-focus focus:border-info-500 transition-all duration-300;
+  }
+
+  .input-soft-error {
+    @apply w-full px-4 py-3 bg-white border border-error-500 rounded-lg text-dark-700 placeholder-secondary-400 focus:outline-none focus:shadow-soft-input-error focus:border-error-500 transition-all duration-300;
+  }
+
+  .input-soft-success {
+    @apply w-full px-4 py-3 bg-white border border-success-500 rounded-lg text-dark-700 placeholder-secondary-400 focus:outline-none focus:shadow-soft-input-success focus:border-success-500 transition-all duration-300;
+  }
+
+  /* Soft UI Navigation */
+  .sidebar-soft {
+    @apply bg-white rounded-2xl shadow-soft-lg p-4 m-4;
+  }
+
+  .sidebar-nav-soft {
+    @apply flex flex-col space-y-2;
+  }
+
+  .sidebar-nav-item-soft {
+    @apply flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300 text-secondary-600 hover:bg-light-200;
+  }
+
+  .sidebar-nav-item-soft.active {
+    @apply bg-gradient-primary text-white shadow-soft-button;
+  }
+
+  /* Soft UI Dashboard Grid */
+  .dashboard-grid-soft {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 p-6;
+  }
+
+  /* Soft UI Stat Cards */
+  .stat-card-soft {
+    @apply bg-white rounded-2xl shadow-soft-lg p-6 transition-all duration-300 hover:shadow-soft-xl hover:-translate-y-1;
+  }
+
+  .stat-card-soft-gradient {
+    @apply bg-gradient-primary text-white rounded-2xl shadow-soft-lg p-6 transition-all duration-300 hover:shadow-soft-xl hover:-translate-y-1;
+  }
+
+  /* Soft UI Tables */
+  .table-soft {
+    @apply bg-white rounded-2xl shadow-soft-lg overflow-hidden;
+  }
+
+  .table-header-soft {
+    @apply bg-light-100 px-6 py-4 border-b border-light-200;
+  }
+
+  .table-row-soft {
+    @apply border-b border-light-200 hover:bg-light-100 transition-colors duration-200;
+  }
+
+  /* Soft UI Badges */
+  .badge-soft {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide;
+  }
+
+  .badge-soft-primary {
+    @apply badge-soft bg-primary-100 text-primary-600;
+  }
+
+  .badge-soft-success {
+    @apply badge-soft bg-success-100 text-success-600;
+  }
+
+  .badge-soft-warning {
+    @apply badge-soft bg-warning-100 text-warning-600;
+  }
+
+  .badge-soft-error {
+    @apply badge-soft bg-error-100 text-error-600;
+  }
+
+  .badge-soft-info {
+    @apply badge-soft bg-info-100 text-info-600;
+  }
+
+  /* Soft UI Typography */
+  .heading-soft {
+    @apply font-medium text-dark-700;
+  }
+
+  .text-soft {
+    @apply text-secondary-500;
+  }
+
+  .text-soft-muted {
+    @apply text-secondary-400;
+  }
+}
