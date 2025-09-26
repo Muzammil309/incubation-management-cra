@@ -1,6 +1,5 @@
 {
   "version": 2,
-  "name": "incubation-management-platform",
   "builds": [
     {
       "src": "package.json",
@@ -21,19 +20,5 @@
       "src": "/(.*)",
       "dest": "/index.html"
     }
-  ],
-  "env": {
-    "REACT_APP_SUPABASE_URL": "@react_app_supabase_url",
-    "REACT_APP_SUPABASE_ANON_KEY": "@react_app_supabase_anon_key",
-    "REACT_APP_FIREBASE_API_KEY": "@react_app_firebase_api_key",
-    "REACT_APP_GOOGLE_API_KEY": "@react_app_google_api_key"
-  },
-  "build": {
-    "env": {
-      "REACT_APP_SUPABASE_URL": "@react_app_supabase_url",
-      "REACT_APP_SUPABASE_ANON_KEY": "@react_app_supabase_anon_key",
-      "REACT_APP_FIREBASE_API_KEY": "@react_app_firebase_api_key",
-      "REACT_APP_GOOGLE_API_KEY": "@react_app_google_api_key"
-    }
-  }
+  ]
 }

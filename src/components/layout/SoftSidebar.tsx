@@ -8,7 +8,6 @@ import {
   Rocket,
   User,
   UserPlus,
-  HelpCircle,
   Star
 } from 'lucide-react';
 import SoftCard from '../ui/SoftCard';

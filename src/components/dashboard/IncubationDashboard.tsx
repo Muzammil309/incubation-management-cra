@@ -8,8 +8,7 @@ import {
   TrendingUp,
   ArrowUp,
   ArrowDown,
-  Rocket,
-  BarChart3
+  Rocket
 } from 'lucide-react';
 
 const IncubationDashboard: React.FC = () => {

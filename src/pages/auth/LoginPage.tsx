@@ -36,16 +36,16 @@ const LoginPage: React.FC = () => {
     }
   };
 
-  const handleSocialLogin = async (provider: 'google' | 'github' | 'linkedin_oidc') => {
-    try {
-      const { error } = await signInWithProvider(provider);
-      if (error) {
-        setError(error.message);
-      }
-    } catch (err) {
-      setError('An unexpected error occurred');
-    }
-  };
+  // const handleSocialLogin = async (provider: 'google' | 'github' | 'linkedin_oidc') => {
+  //   try {
+  //     const { error } = await signInWithProvider(provider);
+  //     if (error) {
+  //       setError(error.message);
+  //     }
+  //   } catch (err) {
+  //     setError('An unexpected error occurred');
+  //   }
+  // };
 
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
 
