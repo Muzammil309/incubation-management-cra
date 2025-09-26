@@ -7,7 +7,7 @@ import { useAuth } from '../contexts/AuthContext';
 
 const SoftDashboardLayout: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const { } = useAuth();
+  // const { } = useAuth();
 
   return (
     <div className="min-h-screen bg-background-default flex">
