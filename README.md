@@ -1,4 +1,26 @@
-# Getting Started with Create React App
+# 🚀 Incubation Management Platform
+
+A comprehensive incubation management platform built with **React**, **TypeScript**, and **Soft UI Dashboard** design system.
+
+## ✨ Features
+
+- 🎨 **Soft UI Dashboard Design** - Beautiful, modern interface with glassmorphism effects
+- 🔐 **Authentication System** - Complete login/signup with CoverLayout and BasicLayout
+- 📊 **Analytics Dashboard** - Real-time charts and metrics with Chart.js
+- 👥 **Startup Management** - Track and manage startup applications
+- 🎯 **Mentor Network** - Connect startups with experienced mentors
+- 💰 **Investment Tracking** - Monitor funding rounds and investor relations
+- 📅 **Event Management** - Organize workshops, pitch sessions, and networking events
+- ⚙️ **Settings & Configuration** - Comprehensive admin controls
+
+## 🛠️ Tech Stack
+
+- **Frontend**: React 18, TypeScript, Tailwind CSS
+- **UI Components**: Custom Soft UI component library
+- **Charts**: Chart.js with React integration
+- **Authentication**: Supabase Auth
+- **Database**: Supabase PostgreSQL
+- **Deployment**: Vercel with automatic GitHub integration
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
