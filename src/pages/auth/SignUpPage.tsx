@@ -1,21 +1,25 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Mail, Lock, User } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
-import Button from '../../components/ui/Button';
-import Input from '../../components/ui/Input';
-import Card from '../../components/ui/Card';
+import SoftBox from '../../components/ui/SoftBox';
+import SoftTypography from '../../components/ui/SoftTypography';
+import SoftInput from '../../components/ui/SoftInput';
+import SoftButton from '../../components/ui/SoftButton';
+import SoftCard from '../../components/ui/SoftCard';
+import BasicLayout from '../../components/layout/BasicLayout';
+import Socials from '../../components/ui/Socials';
+import Separator from '../../components/ui/Separator';
 
 const SignUpPage: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [confirm, setConfirm] = useState('');
   const [name, setName] = useState('');
+  const [agreement, setAgreement] = useState(true);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const { signUp } = useAuth();
+  const { signUp, signInWithProvider } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -23,8 +27,8 @@ const SignUpPage: React.FC = () => {
     setError('');
     setSuccess('');
 
-    if (password !== confirm) {
-      setError('Passwords do not match');
+    if (!agreement) {
+      setError('Please agree to the Terms and Conditions');
       return;
     }
 
@@ -44,76 +48,145 @@ const SignUpPage: React.FC = () => {
     }
   };
 
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-secondary-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-secondary-900">
-            Create your account
-          </h2>
-          <p className="mt-2 text-center text-sm text-secondary-600">
-            Or{' '}
-            <Link to="/auth/login" className="font-medium text-primary-600 hover:text-primary-500">
-              sign in to an existing account
-            </Link>
-          </p>
-        </div>
+  const handleSocialLogin = async (provider: 'google' | 'github' | 'linkedin_oidc') => {
+    try {
+      const { error } = await signInWithProvider(provider);
+      if (error) {
+        setError(error.message);
+      }
+    } catch (err) {
+      setError('An unexpected error occurred');
+    }
+  };
 
-        <Card>
-          <form className="space-y-6" onSubmit={handleSubmit}>
+  const handleSetAgreement = () => setAgreement(!agreement);
+
+  return (
+    <BasicLayout
+      title="Welcome!"
+      description="Use these awesome forms to login or create new account in your project for free."
+      image="https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80"
+    >
+
+      <SoftCard>
+        <SoftBox p={3} mb={1} textAlign="center">
+          <SoftTypography variant="h5" fontWeight="medium">
+            Register with
+          </SoftTypography>
+        </SoftBox>
+
+        <SoftBox mb={2}>
+          <Socials
+            onGoogleClick={() => handleSocialLogin('google')}
+            onGithubClick={() => handleSocialLogin('github')}
+            onLinkedInClick={() => handleSocialLogin('linkedin_oidc')}
+          />
+        </SoftBox>
+
+        <Separator />
+
+        <SoftBox pt={2} pb={3} px={3}>
+          <SoftBox component="form" role="form" onSubmit={handleSubmit}>
             {error && (
-              <div className="bg-error-50 border border-error-200 text-error-700 px-4 py-3 rounded-lg">{error}</div>
+              <SoftBox mb={2} p={2} className="bg-error-50 border border-error-200 rounded-lg">
+                <SoftTypography variant="caption" color="error">
+                  {error}
+                </SoftTypography>
+              </SoftBox>
             )}
             {success && (
-              <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg">{success}</div>
+              <SoftBox mb={2} p={2} className="bg-success-50 border border-success-200 rounded-lg">
+                <SoftTypography variant="caption" color="success">
+                  {success}
+                </SoftTypography>
+              </SoftBox>
             )}
 
-            <Input
-              label="Full name (optional)"
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              icon={User}
-              autoComplete="name"
-            />
+            <SoftBox mb={2}>
+              <SoftInput
+                placeholder="Name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+            </SoftBox>
 
-            <Input
-              label="Email address"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              icon={Mail}
-              required
-              autoComplete="email"
-            />
+            <SoftBox mb={2}>
+              <SoftInput
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </SoftBox>
 
-            <Input
-              label="Password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              icon={Lock}
-              required
-              autoComplete="new-password"
-            />
+            <SoftBox mb={2}>
+              <SoftInput
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </SoftBox>
 
-            <Input
-              label="Confirm password"
-              type="password"
-              value={confirm}
-              onChange={(e) => setConfirm(e.target.value)}
-              icon={Lock}
-              required
-              autoComplete="new-password"
-            />
+            <SoftBox display="flex" alignItems="center">
+              <input
+                type="checkbox"
+                checked={agreement}
+                onChange={handleSetAgreement}
+                className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+              />
+              <SoftTypography
+                variant="button"
+                fontWeight="regular"
+                onClick={handleSetAgreement}
+                className="ml-2 cursor-pointer select-none"
+              >
+                I agree the&nbsp;
+              </SoftTypography>
+              <SoftTypography
+                component="a"
+                href="#"
+                variant="button"
+                fontWeight="bold"
+                textGradient
+              >
+                Terms and Conditions
+              </SoftTypography>
+            </SoftBox>
 
-            <Button type="submit" className="w-full" loading={loading} disabled={!email || !password || !confirm}>
-              Create account
-            </Button>
-          </form>
-        </Card>
-      </div>
-    </div>
+            <SoftBox mt={4} mb={1}>
+              <SoftButton
+                variant="gradient"
+                color="dark"
+                fullWidth
+                type="submit"
+                disabled={loading || !email || !password || !agreement}
+              >
+                {loading ? 'Creating account...' : 'sign up'}
+              </SoftButton>
+            </SoftBox>
+
+            <SoftBox mt={3} textAlign="center">
+              <SoftTypography variant="button" color="text" fontWeight="regular">
+                Already have an account?&nbsp;
+                <SoftTypography
+                  component={Link}
+                  to="/auth/login"
+                  variant="button"
+                  color="dark"
+                  fontWeight="bold"
+                  textGradient
+                >
+                  Sign in
+                </SoftTypography>
+              </SoftTypography>
+            </SoftBox>
+          </SoftBox>
+        </SoftBox>
+      </SoftCard>
+    </BasicLayout>
   );
 };
 
