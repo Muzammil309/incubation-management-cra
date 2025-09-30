@@ -1,10 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SoftBox from '../../components/ui/SoftBox';
 import SoftButton from '../../components/ui/SoftButton';
 import SoftTypography from '../../components/ui/SoftTypography';
 import SoftCard from '../../components/ui/SoftCard';
 import SoftBadge from '../../components/ui/SoftBadge';
 import { Icon } from '@iconify/react';
+import FileUpload from '../../components/upload/FileUpload';
+import FileList from '../../components/upload/FileList';
+import Loading from '../../components/ui/Loading';
+import { useToast } from '../../hooks/useToast';
+import { materialService } from '../../lib/supabaseClient';
 
 interface Session {
   id: string;
@@ -46,8 +51,11 @@ interface Feedback {
 
 const SpeakerDashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState('overview');
-  
-  const [sessions, setSessions] = useState<Session[]>([
+  const [materialsFromDB, setMaterialsFromDB] = useState<any[]>([]);
+  const [loadingMaterials, setLoadingMaterials] = useState(false);
+  const { showSuccess, showError, ToastContainer } = useToast();
+
+  const [sessions] = useState<Session[]>([
     {
       id: '1',
       title: 'Introduction to AI & Machine Learning',
@@ -107,7 +115,7 @@ const SpeakerDashboard: React.FC = () => {
     }
   ]);
 
-  const [feedbacks, setFeedbacks] = useState<Feedback[]>([
+  const [feedbacks] = useState<Feedback[]>([
     {
       id: '1',
       sessionId: '2',
@@ -125,6 +133,26 @@ const SpeakerDashboard: React.FC = () => {
       date: '2024-02-10'
     }
   ]);
+
+  // Fetch materials from Supabase on component mount
+  useEffect(() => {
+    fetchMaterials();
+  }, []);
+
+  const fetchMaterials = async () => {
+    try {
+      setLoadingMaterials(true);
+      // Fetch materials for the first session (or all sessions)
+      const sessionId = sessions[0]?.id || 'default-session';
+      const data = await materialService.getBySessionId(sessionId);
+      setMaterialsFromDB(data);
+    } catch (error: any) {
+      console.error('Failed to fetch materials:', error);
+      showError('Failed to load materials');
+    } finally {
+      setLoadingMaterials(false);
+    }
+  };
 
   const stats = [
     { title: 'Total Sessions', value: sessions.length, icon: 'mdi:presentation', color: 'primary' },
@@ -314,73 +342,52 @@ const SpeakerDashboard: React.FC = () => {
   );
 
   const renderMaterials = () => (
-    <SoftCard>
-      <SoftBox p={3}>
-        <SoftBox display="flex" justifyContent="space-between" alignItems="center" className="mb-4">
-          <SoftTypography variant="h5" fontWeight="bold">
-            Session Materials
+    <SoftBox>
+      <ToastContainer />
+
+      {/* Upload Section */}
+      <SoftCard className="mb-4">
+        <SoftBox p={3}>
+          <SoftTypography variant="h5" fontWeight="bold" className="mb-4">
+            Upload Materials
           </SoftTypography>
-          <SoftButton variant="gradient" color="primary" onClick={handleUploadMaterial}>
-            <Icon icon="mdi:upload" className="mr-2" />
-            Upload Material
-          </SoftButton>
+          <FileUpload
+            sessionId={sessions[0]?.id || 'default-session'}
+            onUploadComplete={(file) => {
+              showSuccess('File uploaded successfully!');
+              fetchMaterials();
+            }}
+            maxSizeMB={10}
+          />
         </SoftBox>
-        
-        <div className="table-responsive">
-          <table className="table table-hover">
-            <thead>
-              <tr>
-                <th>File Name</th>
-                <th>Type</th>
-                <th>Size</th>
-                <th>Uploaded</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {materials.map(material => (
-                <tr key={material.id}>
-                  <td>
-                    <SoftBox display="flex" alignItems="center">
-                      <Icon 
-                        icon={
-                          material.type === 'pdf' ? 'mdi:file-pdf' :
-                          material.type === 'pptx' ? 'mdi:file-powerpoint' :
-                          material.type === 'video' ? 'mdi:video' :
-                          'mdi:link'
-                        } 
-                        className="text-2xl mr-2"
-                      />
-                      <SoftTypography variant="body2" fontWeight="medium">
-                        {material.name}
-                      </SoftTypography>
-                    </SoftBox>
-                  </td>
-                  <td>
-                    <SoftBadge variant="info" size="sm">{material.type.toUpperCase()}</SoftBadge>
-                  </td>
-                  <td>{material.size}</td>
-                  <td>{material.uploadedAt}</td>
-                  <td>
-                    <SoftBox display="flex" className="gap-2">
-                      <button className="btn btn-sm btn-outline-primary">
-                        <Icon icon="mdi:download" />
-                      </button>
-                      <button 
-                        className="btn btn-sm btn-outline-danger"
-                        onClick={() => handleDeleteMaterial(material.id)}
-                      >
-                        <Icon icon="mdi:delete" />
-                      </button>
-                    </SoftBox>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </SoftBox>
-    </SoftCard>
+      </SoftCard>
+
+      {/* Files List Section */}
+      <SoftCard>
+        <SoftBox p={3}>
+          <SoftTypography variant="h5" fontWeight="bold" className="mb-4">
+            Uploaded Materials
+          </SoftTypography>
+          {loadingMaterials ? (
+            <Loading message="Loading materials..." />
+          ) : (
+            <FileList
+              files={materialsFromDB.map(m => ({
+                id: m.id,
+                name: m.file_name,
+                type: m.file_type,
+                url: m.file_url,
+                upload_date: m.created_at
+              }))}
+              onFileDeleted={(fileId) => {
+                showSuccess('File deleted successfully!');
+                fetchMaterials();
+              }}
+            />
+          )}
+        </SoftBox>
+      </SoftCard>
+    </SoftBox>
   );
 
   const renderEngagement = () => (

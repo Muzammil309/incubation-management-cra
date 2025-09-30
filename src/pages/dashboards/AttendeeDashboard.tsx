@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Icon } from '@iconify/react';
-import { StatCard, WowButton, WowCard, WowTable, WowBadge, WowInput } from '../../components/wowdash';
+import { StatCard, WowButton, WowCard, WowBadge, WowInput } from '../../components/wowdash';
 
 interface Ticket {
   id: string;
@@ -37,7 +37,7 @@ interface Connection {
 
 const AttendeeDashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState('overview');
-  const [tickets, setTickets] = useState<Ticket[]>([
+  const [tickets] = useState<Ticket[]>([
     {
       id: '1',
       eventName: 'Startup Pitch Day 2024',

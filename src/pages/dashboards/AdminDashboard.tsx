@@ -92,7 +92,7 @@ const AdminDashboard: React.FC = () => {
     }
   ]);
 
-  const [tickets, setTickets] = useState<Ticket[]>([
+  const [tickets] = useState<Ticket[]>([
     {
       id: '1',
       eventId: '1',
@@ -130,10 +130,6 @@ const AdminDashboard: React.FC = () => {
 
   const handleDeleteEvent = (eventId: string) => {
     setEvents(events.filter(e => e.id !== eventId));
-  };
-
-  const handleUpdateUserRole = (userId: string, newRole: 'attendee' | 'speaker' | 'admin') => {
-    setUsers(users.map(u => u.id === userId ? { ...u, role: newRole } : u));
   };
 
   const renderOverview = () => (
