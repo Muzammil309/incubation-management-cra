@@ -5,6 +5,7 @@ import SoftTypography from '../../components/ui/SoftTypography';
 import SoftCard from '../../components/ui/SoftCard';
 import SoftBadge from '../../components/ui/SoftBadge';
 import { Icon } from '@iconify/react';
+import { AnalyticsDashboard } from '../../components/charts/AnalyticsCharts';
 
 interface Event {
   id: string;
@@ -445,69 +446,65 @@ const AdminDashboard: React.FC = () => {
   );
 
   const renderAnalytics = () => (
-    <SoftCard>
-      <SoftBox p={3}>
-        <SoftTypography variant="h5" fontWeight="bold" className="mb-4">
-          Analytics Dashboard
-        </SoftTypography>
+    <SoftBox>
+      <SoftTypography variant="h5" fontWeight="bold" className="mb-4">
+        Analytics Dashboard
+      </SoftTypography>
 
-        <div className="row gy-4 mb-4">
-          <div className="col-md-3">
-            <SoftCard variant="gradient" gradientType="primary">
-              <SoftBox p={3} textAlign="center">
-                <SoftTypography variant="h4" color="white" fontWeight="bold">
-                  {events.length}
-                </SoftTypography>
-                <SoftTypography variant="body2" color="white">
-                  Total Events
-                </SoftTypography>
-              </SoftBox>
-            </SoftCard>
-          </div>
-          <div className="col-md-3">
-            <SoftCard variant="gradient" gradientType="info">
-              <SoftBox p={3} textAlign="center">
-                <SoftTypography variant="h4" color="white" fontWeight="bold">
-                  {users.length}
-                </SoftTypography>
-                <SoftTypography variant="body2" color="white">
-                  Total Users
-                </SoftTypography>
-              </SoftBox>
-            </SoftCard>
-          </div>
-          <div className="col-md-3">
-            <SoftCard variant="gradient" gradientType="success">
-              <SoftBox p={3} textAlign="center">
-                <SoftTypography variant="h4" color="white" fontWeight="bold">
-                  {tickets.reduce((sum, t) => sum + t.sold, 0)}
-                </SoftTypography>
-                <SoftTypography variant="body2" color="white">
-                  Tickets Sold
-                </SoftTypography>
-              </SoftBox>
-            </SoftCard>
-          </div>
-          <div className="col-md-3">
-            <SoftCard variant="gradient" gradientType="warning">
-              <SoftBox p={3} textAlign="center">
-                <SoftTypography variant="h4" color="white" fontWeight="bold">
-                  $12,450
-                </SoftTypography>
-                <SoftTypography variant="body2" color="white">
-                  Total Revenue
-                </SoftTypography>
-              </SoftBox>
-            </SoftCard>
-          </div>
+      <div className="row gy-4 mb-4">
+        <div className="col-md-3">
+          <SoftCard variant="gradient" gradientType="primary">
+            <SoftBox p={3} textAlign="center">
+              <SoftTypography variant="h4" color="white" fontWeight="bold">
+                {events.length}
+              </SoftTypography>
+              <SoftTypography variant="body2" color="white">
+                Total Events
+              </SoftTypography>
+            </SoftBox>
+          </SoftCard>
         </div>
+        <div className="col-md-3">
+          <SoftCard variant="gradient" gradientType="info">
+            <SoftBox p={3} textAlign="center">
+              <SoftTypography variant="h4" color="white" fontWeight="bold">
+                {users.length}
+              </SoftTypography>
+              <SoftTypography variant="body2" color="white">
+                Total Users
+              </SoftTypography>
+            </SoftBox>
+          </SoftCard>
+        </div>
+        <div className="col-md-3">
+          <SoftCard variant="gradient" gradientType="success">
+            <SoftBox p={3} textAlign="center">
+              <SoftTypography variant="h4" color="white" fontWeight="bold">
+                {tickets.reduce((sum, t) => sum + t.sold, 0)}
+              </SoftTypography>
+              <SoftTypography variant="body2" color="white">
+                Tickets Sold
+              </SoftTypography>
+            </SoftBox>
+          </SoftCard>
+        </div>
+        <div className="col-md-3">
+          <SoftCard variant="gradient" gradientType="warning">
+            <SoftBox p={3} textAlign="center">
+              <SoftTypography variant="h4" color="white" fontWeight="bold">
+                $12,450
+              </SoftTypography>
+              <SoftTypography variant="body2" color="white">
+                Total Revenue
+              </SoftTypography>
+            </SoftBox>
+          </SoftCard>
+        </div>
+      </div>
 
-        <SoftBox className="alert alert-info">
-          <Icon icon="mdi:information" className="mr-2" />
-          Chart visualization will be integrated with Chart.js or Recharts
-        </SoftBox>
-      </SoftBox>
-    </SoftCard>
+      {/* Analytics Charts */}
+      <AnalyticsDashboard />
+    </SoftBox>
   );
 
   const renderMessages = () => (
