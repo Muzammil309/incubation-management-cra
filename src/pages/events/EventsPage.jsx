@@ -66,7 +66,7 @@ const EventsPage = () => {
     ];
 
     return (
-        <div className="dashboard-main-wrapper">
+        <>
             {/* Header */}
             <div className="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-24">
                 <h6 className="fw-semibold mb-0">📅 Event Management</h6>
@@ -267,7 +267,7 @@ const EventsPage = () => {
                     )}
                 </div>
             </div>
-        </div>
+        </>
     );
 };
 

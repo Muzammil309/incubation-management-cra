@@ -26,6 +26,11 @@ import PerformancePage from './pages/performance/PerformancePage';
 import DocumentsPage from './pages/documents/DocumentsPage';
 import AlumniPage from './pages/alumni/AlumniPage';
 
+// Dashboard Pages
+import AttendeeDashboard from './pages/dashboards/AttendeeDashboard';
+import SpeakerDashboard from './pages/dashboards/SpeakerDashboard';
+import AdminDashboard from './pages/dashboards/AdminDashboard';
+
 // UI Components
 import ErrorBoundary from './components/ui/ErrorBoundary';
 
@@ -121,6 +126,11 @@ function App() {
                 <Route path="performance" element={<WowdashLayout><PerformancePage /></WowdashLayout>} />
                 <Route path="documents" element={<WowdashLayout><DocumentsPage /></WowdashLayout>} />
                 <Route path="alumni" element={<WowdashLayout><AlumniPage /></WowdashLayout>} />
+
+                {/* Dashboard Pages */}
+                <Route path="attendee-dashboard" element={<WowdashLayout><AttendeeDashboard /></WowdashLayout>} />
+                <Route path="speaker-dashboard" element={<WowdashLayout><SpeakerDashboard /></WowdashLayout>} />
+                <Route path="admin-dashboard" element={<WowdashLayout><AdminDashboard /></WowdashLayout>} />
               </Route>
 
               {/* Catch all route */}
