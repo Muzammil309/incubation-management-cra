@@ -2,13 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url('https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css');
 
 @layer base {
   body {
-    font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
-    background-color: #f8f9fa;
-    color: #67748e;
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+    background-color: #F9FAFB;
+    color: #1F2937;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
@@ -16,143 +17,207 @@
   * {
     box-sizing: border-box;
   }
+
+  /* WowDash Custom Scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #F3F4F6;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #D1D5DB;
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #9CA3AF;
+  }
 }
 
 @layer components {
-  /* Soft UI Buttons */
-  .btn-soft-primary {
-    @apply bg-gradient-primary text-white font-bold text-sm uppercase py-3 px-6 rounded-lg shadow-soft-button hover:shadow-soft-button-hover transition-all duration-300 transform hover:-translate-y-0.5;
+  /* WowDash Card Styles */
+  .card {
+    @apply bg-white rounded-lg transition-all duration-300;
+    border: 1px solid #E5E7EB;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
   }
 
-  .btn-soft-secondary {
-    @apply bg-gradient-secondary text-white font-bold text-sm uppercase py-3 px-6 rounded-lg shadow-soft-button hover:shadow-soft-button-hover transition-all duration-300 transform hover:-translate-y-0.5;
+  .card-body {
+    @apply p-5;
   }
 
-  .btn-soft-info {
-    @apply bg-gradient-info text-white font-bold text-sm uppercase py-3 px-6 rounded-lg shadow-soft-button hover:shadow-soft-button-hover transition-all duration-300 transform hover:-translate-y-0.5;
+  .card.shadow-none {
+    box-shadow: none;
   }
 
-  .btn-soft-success {
-    @apply bg-gradient-success text-white font-bold text-sm uppercase py-3 px-6 rounded-lg shadow-soft-button hover:shadow-soft-button-hover transition-all duration-300 transform hover:-translate-y-0.5;
+  /* WowDash Gradient Backgrounds - Using direct background-image */
+  .bg-gradient-start-1 {
+    background-image: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   }
 
-  .btn-soft-warning {
-    @apply bg-gradient-warning text-white font-bold text-sm uppercase py-3 px-6 rounded-lg shadow-soft-button hover:shadow-soft-button-hover transition-all duration-300 transform hover:-translate-y-0.5;
+  .bg-gradient-start-2 {
+    background-image: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
   }
 
-  .btn-soft-error {
-    @apply bg-gradient-error text-white font-bold text-sm uppercase py-3 px-6 rounded-lg shadow-soft-button hover:shadow-soft-button-hover transition-all duration-300 transform hover:-translate-y-0.5;
+  .bg-gradient-start-3 {
+    background-image: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
   }
 
-  .btn-soft-outline {
-    @apply bg-transparent border-2 border-primary-500 text-primary-500 font-bold text-sm uppercase py-3 px-6 rounded-lg hover:bg-primary-500 hover:text-white transition-all duration-300;
+  .bg-gradient-start-4 {
+    background-image: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
   }
 
-  /* Soft UI Cards */
-  .card-soft {
-    @apply bg-white rounded-2xl shadow-soft-lg border-0 p-6 transition-all duration-300 hover:shadow-soft-xl;
+  .bg-gradient-start-5 {
+    background-image: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
   }
 
-  .card-soft-gradient {
-    @apply bg-gradient-primary rounded-2xl shadow-soft-lg border-0 p-6 text-white transition-all duration-300 hover:shadow-soft-xl;
+  /* WowDash Button Styles */
+  .btn-primary {
+    @apply bg-primary-500 text-white font-medium px-4 py-2 rounded-lg hover:bg-primary-600 transition-colors duration-200;
   }
 
-  .card-soft-blur {
-    @apply bg-white/80 backdrop-blur-soft rounded-2xl shadow-soft-lg border border-white/20 p-6 transition-all duration-300 hover:shadow-soft-xl;
+  .btn-success {
+    @apply bg-success-500 text-white font-medium px-4 py-2 rounded-lg hover:bg-success-600 transition-colors duration-200;
   }
 
-  /* Soft UI Input Fields */
-  .input-soft {
-    @apply w-full px-4 py-3 bg-white border border-light-300 rounded-lg text-dark-700 placeholder-secondary-400 focus:outline-none focus:shadow-soft-input-focus focus:border-info-500 transition-all duration-300;
+  .btn-danger {
+    @apply bg-danger-500 text-white font-medium px-4 py-2 rounded-lg hover:bg-danger-600 transition-colors duration-200;
   }
 
-  .input-soft-error {
-    @apply w-full px-4 py-3 bg-white border border-error-500 rounded-lg text-dark-700 placeholder-secondary-400 focus:outline-none focus:shadow-soft-input-error focus:border-error-500 transition-all duration-300;
+  .btn-warning {
+    @apply bg-warning-500 text-white font-medium px-4 py-2 rounded-lg hover:bg-warning-600 transition-colors duration-200;
   }
 
-  .input-soft-success {
-    @apply w-full px-4 py-3 bg-white border border-success-500 rounded-lg text-dark-700 placeholder-secondary-400 focus:outline-none focus:shadow-soft-input-success focus:border-success-500 transition-all duration-300;
+  .btn-info {
+    @apply bg-info-500 text-white font-medium px-4 py-2 rounded-lg hover:bg-info-600 transition-colors duration-200;
   }
 
-  /* Soft UI Navigation */
-  .sidebar-soft {
-    @apply bg-white rounded-2xl shadow-soft-lg p-4 m-4;
+  /* WowDash Text Colors */
+  .text-primary-light {
+    @apply text-neutral-600;
   }
 
-  .sidebar-nav-soft {
-    @apply flex flex-col space-y-2;
+  .text-success-main {
+    @apply text-success-600;
   }
 
-  .sidebar-nav-item-soft {
-    @apply flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300 text-secondary-600 hover:bg-light-200;
+  .text-danger-main {
+    @apply text-danger-600;
   }
 
-  .sidebar-nav-item-soft.active {
-    @apply bg-gradient-primary text-white shadow-soft-button;
+  .text-warning-main {
+    @apply text-warning-600;
   }
 
-  /* Soft UI Dashboard Grid */
-  .dashboard-grid-soft {
-    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 p-6;
+  .text-info-main {
+    @apply text-info-600;
   }
 
-  /* Soft UI Stat Cards */
-  .stat-card-soft {
-    @apply bg-white rounded-2xl shadow-soft-lg p-6 transition-all duration-300 hover:shadow-soft-xl hover:-translate-y-1;
+  /* WowDash Background Colors */
+  .bg-cyan {
+    background-color: #06B6D4;
   }
 
-  .stat-card-soft-gradient {
-    @apply bg-gradient-primary text-white rounded-2xl shadow-soft-lg p-6 transition-all duration-300 hover:shadow-soft-xl hover:-translate-y-1;
+  .bg-purple {
+    background-color: #A855F7;
   }
 
-  /* Soft UI Tables */
-  .table-soft {
-    @apply bg-white rounded-2xl shadow-soft-lg overflow-hidden;
+  .bg-info {
+    background-color: #3b82f6;
   }
 
-  .table-header-soft {
-    @apply bg-light-100 px-6 py-4 border-b border-light-200;
+  .bg-success-main {
+    background-color: #22c55e;
   }
 
-  .table-row-soft {
-    @apply border-b border-light-200 hover:bg-light-100 transition-colors duration-200;
+  .bg-red {
+    background-color: #EF4444;
   }
 
-  /* Soft UI Badges */
-  .badge-soft {
-    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide;
+  /* WowDash Utility Classes */
+  .w-50-px {
+    width: 50px;
   }
 
-  .badge-soft-primary {
-    @apply badge-soft bg-primary-100 text-primary-600;
+  .h-50-px {
+    height: 50px;
   }
 
-  .badge-soft-success {
-    @apply badge-soft bg-success-100 text-success-600;
+  .p-20 {
+    padding: 20px;
   }
 
-  .badge-soft-warning {
-    @apply badge-soft bg-warning-100 text-warning-600;
+  .mt-12 {
+    margin-top: 12px;
   }
 
-  .badge-soft-error {
-    @apply badge-soft bg-error-100 text-error-600;
+  .mb-0 {
+    margin-bottom: 0;
   }
 
-  .badge-soft-info {
-    @apply badge-soft bg-info-100 text-info-600;
+  .mb-1 {
+    margin-bottom: 0.25rem;
   }
 
-  /* Soft UI Typography */
-  .heading-soft {
-    @apply font-medium text-dark-700;
+  .gap-2 {
+    gap: 0.5rem;
   }
 
-  .text-soft {
-    @apply text-secondary-500;
+  .gap-3 {
+    gap: 0.75rem;
   }
 
-  .text-soft-muted {
-    @apply text-secondary-400;
+  /* WowDash Typography */
+  .fw-medium {
+    font-weight: 500;
+  }
+
+  .fw-semibold {
+    font-weight: 600;
+  }
+
+  .fw-bold {
+    font-weight: 700;
+  }
+
+  .text-sm {
+    font-size: 0.875rem;
+  }
+
+  .text-2xl {
+    font-size: 1.5rem;
+  }
+
+  .text-xs {
+    font-size: 0.75rem;
+  }
+
+  /* WowDash Badge Styles */
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+
+  .badge-primary {
+    @apply bg-primary-100 text-primary-700;
+  }
+
+  .badge-success {
+    @apply bg-success-100 text-success-700;
+  }
+
+  .badge-warning {
+    @apply bg-warning-100 text-warning-700;
+  }
+
+  .badge-danger {
+    @apply bg-danger-100 text-danger-700;
+  }
+
+  .badge-info {
+    @apply bg-info-100 text-info-700;
   }
 }

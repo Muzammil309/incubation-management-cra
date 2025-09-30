@@ -5,7 +5,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 
 // Layout Components
-import SoftDashboardLayout from './layouts/SoftDashboardLayout';
+import WowdashLayout from './layouts/WowdashLayout';
 
 // Page Components
 import LoginPage from './pages/auth/LoginPage';
@@ -17,6 +17,14 @@ import AnalyticsPage from './pages/analytics/AnalyticsPage';
 import EventsPage from './pages/events/EventsPage';
 import InvestmentsPage from './pages/investments/InvestmentsPage';
 import SettingsPage from './pages/settings/SettingsPage';
+
+// New WowDash Pages
+import ApplicationsPage from './pages/applications/ApplicationsPage';
+import ResourcesPage from './pages/resources/ResourcesPage';
+import FundingPage from './pages/funding/FundingPage';
+import PerformancePage from './pages/performance/PerformancePage';
+import DocumentsPage from './pages/documents/DocumentsPage';
+import AlumniPage from './pages/alumni/AlumniPage';
 
 // UI Components
 import ErrorBoundary from './components/ui/ErrorBoundary';
@@ -96,22 +104,23 @@ function App() {
               />
               
               {/* Protected Routes */}
-              <Route
-                path="/"
-                element={
-                  <ProtectedRoute>
-                    <SoftDashboardLayout />
-                  </ProtectedRoute>
-                }
-              >
+              <Route path="/" element={<ProtectedRoute><WowdashLayout><div /></WowdashLayout></ProtectedRoute>}>
                 <Route index element={<Navigate to="/dashboard" replace />} />
-                <Route path="dashboard" element={<IncubationDashboard />} />
-                <Route path="startups" element={<StartupsPage />} />
-                <Route path="mentors" element={<MentorsPage />} />
-                <Route path="analytics" element={<AnalyticsPage />} />
-                <Route path="events" element={<EventsPage />} />
-                <Route path="investments" element={<InvestmentsPage />} />
-                <Route path="settings" element={<SettingsPage />} />
+                <Route path="dashboard" element={<WowdashLayout><IncubationDashboard /></WowdashLayout>} />
+                <Route path="startups" element={<WowdashLayout><StartupsPage /></WowdashLayout>} />
+                <Route path="mentors" element={<WowdashLayout><MentorsPage /></WowdashLayout>} />
+                <Route path="analytics" element={<WowdashLayout><AnalyticsPage /></WowdashLayout>} />
+                <Route path="events" element={<WowdashLayout><EventsPage /></WowdashLayout>} />
+                <Route path="investments" element={<WowdashLayout><InvestmentsPage /></WowdashLayout>} />
+                <Route path="settings" element={<WowdashLayout><SettingsPage /></WowdashLayout>} />
+
+                {/* New WowDash Pages */}
+                <Route path="applications" element={<WowdashLayout><ApplicationsPage /></WowdashLayout>} />
+                <Route path="resources" element={<WowdashLayout><ResourcesPage /></WowdashLayout>} />
+                <Route path="funding" element={<WowdashLayout><FundingPage /></WowdashLayout>} />
+                <Route path="performance" element={<WowdashLayout><PerformancePage /></WowdashLayout>} />
+                <Route path="documents" element={<WowdashLayout><DocumentsPage /></WowdashLayout>} />
+                <Route path="alumni" element={<WowdashLayout><AlumniPage /></WowdashLayout>} />
               </Route>
 
               {/* Catch all route */}

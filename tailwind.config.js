@@ -6,144 +6,150 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // Soft UI Primary Colors
+        // WowDash Primary Colors
         primary: {
-          50: '#fdf2f8',
-          100: '#fce7f3',
-          200: '#fbcfe8',
-          300: '#f9a8d4',
-          400: '#f472b6',
-          500: '#cb0c9f', // Main primary from Soft UI
-          600: '#ad0a87', // Focus primary from Soft UI
-          700: '#be185d',
-          800: '#9d174d',
-          900: '#831843',
+          50: '#f0f4ff',
+          100: '#e0e9ff',
+          200: '#c7d7fe',
+          300: '#a5b8fc',
+          400: '#8b92f8',
+          500: '#487FFF', // Main primary from WowDash
+          600: '#3d6fe6', // Darker primary
+          700: '#3259cc',
+          800: '#2743a6',
+          900: '#1e3280',
+          light: '#D0D5DD', // Primary light variant
         },
-        // Soft UI Secondary Colors
+        // WowDash Secondary Colors
         secondary: {
-          50: '#f8fafc',
-          100: '#f1f5f9',
-          200: '#e2e8f0',
-          300: '#cbd5e1',
-          400: '#96a2b8', // Focus secondary from Soft UI
-          500: '#8392ab', // Main secondary from Soft UI
-          600: '#64748b',
-          700: '#475569',
-          800: '#334155',
-          900: '#1e293b',
+          50: '#faf5ff',
+          100: '#f3e8ff',
+          200: '#e9d5ff',
+          300: '#d8b4fe',
+          400: '#c084fc',
+          500: '#a855f7',
+          600: '#9333ea',
+          700: '#7e22ce',
+          800: '#6b21a8',
+          900: '#581c87',
         },
-        // Soft UI Info Colors
-        info: {
-          50: '#f0f9ff',
-          100: '#e0f2fe',
-          200: '#bae6fd',
-          300: '#7dd3fc',
-          400: '#3acaeb', // Focus info from Soft UI
-          500: '#17c1e8', // Main info from Soft UI
-          600: '#0284c7',
-          700: '#0369a1',
-          800: '#075985',
-          900: '#0c4a6e',
-        },
-        // Soft UI Success Colors
+        // WowDash Success Colors
         success: {
           50: '#f0fdf4',
           100: '#dcfce7',
           200: '#bbf7d0',
           300: '#86efac',
-          400: '#95dc39', // Focus success from Soft UI
-          500: '#82d616', // Main success from Soft UI
+          400: '#4ade80',
+          500: '#22c55e',
           600: '#16a34a',
           700: '#15803d',
           800: '#166534',
           900: '#14532d',
+          main: '#22c55e', // Main success
         },
-        // Soft UI Warning Colors
+        // WowDash Warning Colors
         warning: {
           50: '#fffbeb',
           100: '#fef3c7',
           200: '#fde68a',
           300: '#fcd34d',
-          400: '#fcd652', // Focus warning from Soft UI
-          500: '#fbcf33', // Main warning from Soft UI
+          400: '#fbbf24',
+          500: '#f59e0b',
           600: '#d97706',
           700: '#b45309',
           800: '#92400e',
           900: '#78350f',
+          main: '#f59e0b', // Main warning
         },
-        // Soft UI Error Colors
-        error: {
+        // WowDash Danger/Error Colors
+        danger: {
           50: '#fef2f2',
           100: '#fee2e2',
           200: '#fecaca',
           300: '#fca5a5',
           400: '#f87171',
-          500: '#ea0606', // Main error from Soft UI
-          600: '#c70505', // Focus error from Soft UI
+          500: '#ef4444',
+          600: '#dc2626',
           700: '#b91c1c',
           800: '#991b1b',
           900: '#7f1d1d',
+          main: '#ef4444', // Main danger
         },
-        // Soft UI Dark Colors
-        dark: {
-          50: '#f8fafc',
-          100: '#f1f5f9',
-          200: '#e2e8f0',
-          300: '#cbd5e1',
-          400: '#94a3b8',
-          500: '#64748b',
-          600: '#475569',
-          700: '#344767', // Main dark from Soft UI
-          800: '#1e293b',
-          900: '#0f172a',
+        // WowDash Info Colors
+        info: {
+          50: '#eff6ff',
+          100: '#dbeafe',
+          200: '#bfdbfe',
+          300: '#93c5fd',
+          400: '#60a5fa',
+          500: '#3b82f6',
+          600: '#2563eb',
+          700: '#1d4ed8',
+          800: '#1e40af',
+          900: '#1e3a8a',
+          main: '#3b82f6', // Main info
         },
-        // Soft UI Light Colors
-        light: {
-          50: '#ffffff',
-          100: '#f8f9fa', // Background default from Soft UI
-          200: '#e9ecef', // Main light from Soft UI
-          300: '#dee2e6',
-          400: '#ced4da',
-          500: '#adb5bd',
-          600: '#6c757d',
-          700: '#495057',
-          800: '#343a40',
-          900: '#212529',
+        // WowDash Neutral/Gray Colors
+        neutral: {
+          0: '#FFFFFF',
+          50: '#F9FAFB',
+          100: '#F3F4F6',
+          200: '#E5E7EB',
+          300: '#D1D5DB',
+          400: '#9CA3AF',
+          500: '#6B7280',
+          600: '#4B5563',
+          700: '#374151',
+          800: '#1F2937',
+          900: '#111827',
+          950: '#030712',
         },
-        // Soft UI Text Colors
-        text: {
-          main: '#67748e', // Main text from Soft UI
-          focus: '#67748e', // Focus text from Soft UI
-        },
-        // Soft UI Background
-        background: {
-          default: '#f8f9fa', // Default background from Soft UI
-        },
+        // WowDash Text Colors
+        'text-primary': '#1F2937',
+        'text-secondary': '#6B7280',
+        'text-tertiary': '#9CA3AF',
+        'primary-light': '#D0D5DD',
+        'lilac': '#B1B5C3',
+        'purple': '#A855F7',
+        'cyan': '#06B6D4',
+        'red': '#EF4444',
+        'pink': '#EC4899',
+        'orange': '#F97316',
+        'yellow': '#EAB308',
+        'lime': '#84CC16',
+        'teal': '#14B8A6',
+        'indigo': '#6366F1',
       },
       fontFamily: {
-        sans: ['Roboto', 'Helvetica', 'Arial', 'sans-serif'], // Soft UI font family
+        sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+        display: ['Inter', 'system-ui', 'sans-serif'],
       },
       fontSize: {
-        'xxs': '0.65rem',   // 10.4px - Soft UI fontSizeXXS
-        'xs': '0.75rem',    // 12px - Soft UI fontSizeXS
-        'sm': '0.875rem',   // 14px - Soft UI fontSizeSM
-        'base': '1rem',     // 16px - Soft UI fontSizeMD
-        'lg': '1.125rem',   // 18px - Soft UI fontSizeLG
-        'xl': '1.25rem',    // 20px - Soft UI fontSizeXL
-        '2xl': '1.5rem',    // 24px
-        '3xl': '1.875rem',  // 30px - Soft UI h3
-        '4xl': '2.25rem',   // 36px - Soft UI h2
-        '5xl': '3rem',      // 48px - Soft UI h1
-        '6xl': '3.5rem',    // 56px - Soft UI d4
-        '7xl': '4rem',      // 64px - Soft UI d3
-        '8xl': '4.5rem',    // 72px - Soft UI d2
-        '9xl': '5rem',      // 80px - Soft UI d1
+        'xxs': '0.625rem',   // 10px
+        'xs': '0.75rem',     // 12px
+        'sm': '0.875rem',    // 14px
+        'base': '1rem',      // 16px
+        'lg': '1.125rem',    // 18px
+        'xl': '1.25rem',     // 20px
+        '2xl': '1.5rem',     // 24px
+        '3xl': '1.875rem',   // 30px
+        '4xl': '2.25rem',    // 36px
+        '5xl': '3rem',       // 48px
+        '6xl': '3.75rem',    // 60px
+        '7xl': '4.5rem',     // 72px
+        '8xl': '6rem',       // 96px
+        '9xl': '8rem',       // 128px
       },
       fontWeight: {
-        light: 300,    // Soft UI fontWeightLight
-        normal: 400,   // Soft UI fontWeightRegular
-        medium: 500,   // Soft UI fontWeightMedium
-        bold: 700,     // Soft UI fontWeightBold
+        thin: 100,
+        extralight: 200,
+        light: 300,
+        normal: 400,
+        medium: 500,
+        semibold: 600,
+        bold: 700,
+        extrabold: 800,
+        black: 900,
       },
       spacing: {
         '18': '4.5rem',
@@ -151,44 +157,48 @@ module.exports = {
         '128': '32rem',
       },
       borderRadius: {
+        'sm': '0.25rem',
+        'md': '0.375rem',
+        'lg': '0.5rem',
         'xl': '0.75rem',
         '2xl': '1rem',
         '3xl': '1.5rem',
         '4xl': '2rem',
       },
-      // Soft UI Box Shadows
+      // WowDash Box Shadows
       boxShadow: {
-        'soft-xs': '0 2px 9px -5px rgba(0, 0, 0, 0.15)',
-        'soft-sm': '0 5px 10px 0 rgba(0, 0, 0, 0.12)',
-        'soft-md': '0 4px 6px -1px rgba(20, 20, 20, 0.12), 0 2px 4px -1px rgba(20, 20, 20, 0.07)',
-        'soft-lg': '0 8px 26px -4px rgba(20, 20, 20, 0.15), 0 8px 9px -5px rgba(20, 20, 20, 0.06)',
-        'soft-xl': '0 23px 45px -11px rgba(20, 20, 20, 0.25)',
-        'soft-xxl': '0 20px 27px 0 rgba(0, 0, 0, 0.05)',
-        'soft-inset': 'inset 0 1px 2px 0 rgba(0, 0, 0, 0.075)',
-        'soft-navbar': 'inset 0 0 1px 1px rgba(255, 255, 255, 0.9), 0 20px 27px 0 rgba(0, 0, 0, 0.05)',
-        'soft-button': '0 4px 7px -1px rgba(0, 0, 0, 0.11), 0 2px 4px -1px rgba(0, 0, 0, 0.07)',
-        'soft-button-hover': '0 3px 5px -1px rgba(0, 0, 0, 0.09), 0 2px 5px -1px rgba(0, 0, 0, 0.07)',
-        'soft-input-focus': '0 0 0 2px rgba(129, 227, 249, 1)',
-        'soft-input-error': '0 0 0 2px rgba(253, 92, 112, 0.6)',
-        'soft-input-success': '0 0 0 2px rgba(102, 212, 50, 0.6)',
+        'xs': '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
+        'sm': '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1)',
+        'md': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)',
+        'lg': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1)',
+        'xl': '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)',
+        '2xl': '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+        'inner': 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.05)',
+        'none': 'none',
       },
-      // Soft UI Gradients
+      // WowDash Gradients
       backgroundImage: {
-        'gradient-primary': 'linear-gradient(310deg, #7928ca 0%, #ff0080 100%)',
-        'gradient-secondary': 'linear-gradient(310deg, #627594 0%, #a8b8d8 100%)',
-        'gradient-info': 'linear-gradient(310deg, #2152ff 0%, #21d4fd 100%)',
-        'gradient-success': 'linear-gradient(310deg, #17ad37 0%, #98ec2d 100%)',
-        'gradient-warning': 'linear-gradient(310deg, #f53939 0%, #fbcf33 100%)',
-        'gradient-error': 'linear-gradient(310deg, #ea0606 0%, #ff667c 100%)',
-        'gradient-light': 'linear-gradient(310deg, #ced4da 0%, #ebeff4 100%)',
-        'gradient-dark': 'linear-gradient(310deg, #141727 0%, #3a416f 100%)',
+        'gradient-start-1': 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        'gradient-start-2': 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+        'gradient-start-3': 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+        'gradient-start-4': 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
+        'gradient-start-5': 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
+        'gradient-primary': 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        'gradient-secondary': 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+        'gradient-info': 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+        'gradient-success': 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
+        'gradient-warning': 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
+        'gradient-danger': 'linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%)',
       },
       animation: {
-        'fade-in': 'fadeIn 0.5s ease-in-out',
+        'fade-in': 'fadeIn 0.3s ease-in-out',
         'slide-up': 'slideUp 0.3s ease-out',
         'slide-down': 'slideDown 0.3s ease-out',
-        'soft-bounce': 'softBounce 0.6s ease-in-out',
-        'soft-pulse': 'softPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'slide-left': 'slideLeft 0.3s ease-out',
+        'slide-right': 'slideRight 0.3s ease-out',
+        'bounce-slow': 'bounce 2s infinite',
+        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'spin-slow': 'spin 3s linear infinite',
       },
       keyframes: {
         fadeIn: {
@@ -203,30 +213,31 @@ module.exports = {
           '0%': { transform: 'translateY(-10px)', opacity: '0' },
           '100%': { transform: 'translateY(0)', opacity: '1' },
         },
-        softBounce: {
-          '0%, 100%': {
-            transform: 'translateY(-25%)',
-            animationTimingFunction: 'cubic-bezier(0.8, 0, 1, 1)',
-          },
-          '50%': {
-            transform: 'none',
-            animationTimingFunction: 'cubic-bezier(0, 0, 0.2, 1)',
-          },
+        slideLeft: {
+          '0%': { transform: 'translateX(10px)', opacity: '0' },
+          '100%': { transform: 'translateX(0)', opacity: '1' },
         },
-        softPulse: {
-          '0%, 100%': { opacity: '1' },
-          '50%': { opacity: '0.5' },
+        slideRight: {
+          '0%': { transform: 'translateX(-10px)', opacity: '0' },
+          '100%': { transform: 'translateX(0)', opacity: '1' },
         },
       },
-      // Soft UI specific utilities
       backdropBlur: {
-        'soft': '20px',
+        'xs': '2px',
+        'sm': '4px',
+        'md': '8px',
+        'lg': '12px',
+        'xl': '16px',
+        '2xl': '24px',
+        '3xl': '40px',
       },
       transitionTimingFunction: {
-        'soft': 'cubic-bezier(0.4, 0, 0.2, 1)',
+        'bounce-in': 'cubic-bezier(0.68, -0.55, 0.265, 1.55)',
       },
       transitionDuration: {
         '400': '400ms',
+        '600': '600ms',
+        '800': '800ms',
       },
     },
   },
