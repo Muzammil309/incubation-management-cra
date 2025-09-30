@@ -201,7 +201,7 @@ const AttendeeDashboard: React.FC = () => {
             title="Upcoming Events"
             subtitle="Events you're registered for"
             headerAction={
-              <WowButton variant="outline" size="sm">
+              <WowButton variant="secondary" size="sm">
                 <Icon icon="mdi:calendar-plus" className="me-2" />
                 Browse Events
               </WowButton>
