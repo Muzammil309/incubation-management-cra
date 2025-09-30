@@ -1,6 +1,14 @@
 import React, { useState } from 'react';
 import { Icon } from '@iconify/react';
-import { StatCard, WowButton, WowCard, WowBadge, WowInput } from '../../components/wowdash';
+import {
+  DashboardLayout,
+  GradientStatCard,
+  TabNavigation,
+  DataCard,
+  WowButton,
+  WowBadge,
+  WowInput
+} from '../../components/wowdash';
 
 interface Ticket {
   id: string;
@@ -106,39 +114,13 @@ const AttendeeDashboard: React.FC = () => {
     }
   ]);
 
-  const stats = [
-    {
-      title: 'My Tickets',
-      value: tickets.length.toString(),
-      icon: 'mdi:ticket',
-      iconBgColor: 'bg-primary-500',
-      gradientClass: 'bg-gradient-start-1',
-      trend: { value: '+2', isPositive: true, label: 'This month' }
-    },
-    {
-      title: 'Events Attended',
-      value: tickets.filter(t => t.checkInStatus === 'checked-in').length.toString(),
-      icon: 'mdi:calendar-check',
-      iconBgColor: 'bg-success-500',
-      gradientClass: 'bg-gradient-start-4',
-      trend: { value: '+1', isPositive: true, label: 'This week' }
-    },
-    {
-      title: 'Connections',
-      value: connections.filter(c => c.status === 'connected').length.toString(),
-      icon: 'mdi:account-group',
-      iconBgColor: 'bg-info-500',
-      gradientClass: 'bg-gradient-start-3',
-      trend: { value: '+5', isPositive: true, label: 'This month' }
-    },
-    {
-      title: 'Upcoming Events',
-      value: events.filter(e => e.registered).length.toString(),
-      icon: 'mdi:calendar-clock',
-      iconBgColor: 'bg-warning-500',
-      gradientClass: 'bg-gradient-start-5',
-      trend: { value: '2', isPositive: true, label: 'Registered' }
-    }
+  const tabs = [
+    { id: 'overview', label: 'Overview', icon: 'mdi:view-dashboard' },
+    { id: 'tickets', label: 'My Tickets', icon: 'mdi:ticket', badge: tickets.length },
+    { id: 'schedule', label: 'Schedule', icon: 'mdi:calendar' },
+    { id: 'recommendations', label: 'Recommendations', icon: 'mdi:star' },
+    { id: 'networking', label: 'Networking', icon: 'mdi:account-group', badge: connections.filter(c => c.status === 'pending').length },
+    { id: 'settings', label: 'Settings', icon: 'mdi:cog' }
   ];
 
   const handleRegisterEvent = (eventId: string) => {
@@ -159,19 +141,76 @@ const AttendeeDashboard: React.FC = () => {
 
   const renderOverview = () => (
     <>
-      <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-4 gy-4 mb-4">
-        {stats.map((stat, index) => (
-          <div className="col" key={index}>
-            <StatCard {...stat} />
-          </div>
-        ))}
+      {/* Stats Cards */}
+      <div className="row row-cols-xxxl-5 row-cols-lg-3 row-cols-sm-2 row-cols-1 gy-4 mb-4">
+        <GradientStatCard
+          title="My Tickets"
+          value={tickets.length}
+          icon="mdi:ticket"
+          iconBgColor="bg-cyan"
+          gradientClass="bg-gradient-start-1"
+          trend={{
+            value: '+2',
+            isPositive: true,
+            label: 'This month'
+          }}
+        />
+        <GradientStatCard
+          title="Events Attended"
+          value={tickets.filter(t => t.checkInStatus === 'checked-in').length}
+          icon="mdi:check-circle"
+          iconBgColor="bg-purple"
+          gradientClass="bg-gradient-start-2"
+          trend={{
+            value: '+1',
+            isPositive: true,
+            label: 'This week'
+          }}
+        />
+        <GradientStatCard
+          title="Connections"
+          value={connections.filter(c => c.status === 'connected').length}
+          icon="mdi:account-group"
+          iconBgColor="bg-info"
+          gradientClass="bg-gradient-start-3"
+          trend={{
+            value: '+5',
+            isPositive: true,
+            label: 'This month'
+          }}
+        />
+        <GradientStatCard
+          title="Upcoming Events"
+          value={events.filter(e => e.registered).length}
+          icon="mdi:calendar-clock"
+          iconBgColor="bg-success-main"
+          gradientClass="bg-gradient-start-4"
+          trend={{
+            value: '2',
+            isPositive: true,
+            label: 'Registered'
+          }}
+        />
+        <GradientStatCard
+          title="Pending Invites"
+          value={connections.filter(c => c.status === 'pending').length}
+          icon="mdi:email"
+          iconBgColor="bg-red"
+          gradientClass="bg-gradient-start-5"
+          trend={{
+            value: '1',
+            isPositive: false,
+            label: 'Awaiting response'
+          }}
+        />
       </div>
 
+      {/* Content */}
       <div className="row gy-4">
         <div className="col-lg-8">
-          <WowCard title="Upcoming Events" subtitle="Events you're registered for">
+          <DataCard title="Upcoming Events" subtitle="Events you're registered for">
             <div className="table-responsive">
-              <table className="table table-hover">
+              <table className="table">
                 <thead>
                   <tr>
                     <th>Event</th>
@@ -194,11 +233,11 @@ const AttendeeDashboard: React.FC = () => {
                 </tbody>
               </table>
             </div>
-          </WowCard>
+          </DataCard>
         </div>
 
         <div className="col-lg-4">
-          <WowCard title="Quick Actions">
+          <DataCard title="Quick Actions">
             <div className="d-flex flex-column gap-3">
               <WowButton variant="primary" fullWidth>
                 <Icon icon="mdi:ticket-plus" className="mr-2" />
@@ -213,14 +252,14 @@ const AttendeeDashboard: React.FC = () => {
                 Find Connections
               </WowButton>
             </div>
-          </WowCard>
+          </DataCard>
         </div>
       </div>
     </>
   );
 
   const renderMyTickets = () => (
-    <WowCard title="My Tickets" subtitle="View and manage your event tickets">
+    <DataCard title="My Tickets" subtitle="View and manage your event tickets">
       <div className="row gy-4">
         {tickets.map(ticket => (
           <div className="col-md-6" key={ticket.id}>
@@ -260,13 +299,13 @@ const AttendeeDashboard: React.FC = () => {
           </div>
         ))}
       </div>
-    </WowCard>
+    </DataCard>
   );
 
   const renderSchedule = () => (
-    <WowCard title="Event Schedule" subtitle="View and manage your event calendar">
+    <DataCard title="Event Schedule" subtitle="View and manage your event calendar">
       <div className="table-responsive">
-        <table className="table table-hover">
+        <table className="table">
           <thead>
             <tr>
               <th>Event</th>
@@ -297,11 +336,11 @@ const AttendeeDashboard: React.FC = () => {
           </tbody>
         </table>
       </div>
-    </WowCard>
+    </DataCard>
   );
 
   const renderRecommendations = () => (
-    <WowCard title="Recommended Events" subtitle="Events you might be interested in">
+    <DataCard title="Recommended Events" subtitle="Events you might be interested in">
       <div className="row gy-4">
         {events.filter(e => !e.registered).map(event => (
           <div className="col-md-6" key={event.id}>
@@ -327,8 +366,8 @@ const AttendeeDashboard: React.FC = () => {
                 </div>
                 <div className="mb-3">
                   <div className="progress" style={{ height: '8px' }}>
-                    <div 
-                      className="progress-bar bg-primary-500" 
+                    <div
+                      className="progress-bar bg-primary-500"
                       style={{ width: `${(event.attendees / event.capacity) * 100}%` }}
                     />
                   </div>
@@ -336,9 +375,9 @@ const AttendeeDashboard: React.FC = () => {
                     {event.attendees}/{event.capacity} attendees
                   </p>
                 </div>
-                <WowButton 
-                  variant="primary" 
-                  fullWidth 
+                <WowButton
+                  variant="primary"
+                  fullWidth
                   onClick={() => handleRegisterEvent(event.id)}
                 >
                   Register Now
@@ -348,11 +387,11 @@ const AttendeeDashboard: React.FC = () => {
           </div>
         ))}
       </div>
-    </WowCard>
+    </DataCard>
   );
 
   const renderNetworking = () => (
-    <WowCard title="Networking" subtitle="Connect with other attendees">
+    <DataCard title="Networking" subtitle="Connect with other attendees">
       <div className="row gy-4">
         {connections.map(connection => (
           <div className="col-md-6" key={connection.id}>
@@ -369,9 +408,9 @@ const AttendeeDashboard: React.FC = () => {
                   </WowBadge>
                 </div>
                 {connection.status !== 'connected' && (
-                  <WowButton 
-                    variant="primary" 
-                    size="sm" 
+                  <WowButton
+                    variant="primary"
+                    size="sm"
                     fullWidth
                     onClick={() => handleSendConnectionRequest(connection.id)}
                   >
@@ -384,11 +423,11 @@ const AttendeeDashboard: React.FC = () => {
           </div>
         ))}
       </div>
-    </WowCard>
+    </DataCard>
   );
 
   const renderSettings = () => (
-    <WowCard title="Settings" subtitle="Manage your preferences">
+    <DataCard title="Settings" subtitle="Manage your preferences">
       <div className="row gy-4">
         <div className="col-md-6">
           <WowInput label="Full Name" value="John Doe" />
@@ -409,45 +448,26 @@ const AttendeeDashboard: React.FC = () => {
           </div>
         </div>
       </div>
-    </WowCard>
+    </DataCard>
   );
 
-  const tabs = [
-    { id: 'overview', label: 'Overview', icon: 'mdi:view-dashboard' },
-    { id: 'tickets', label: 'My Tickets', icon: 'mdi:ticket' },
-    { id: 'schedule', label: 'Schedule', icon: 'mdi:calendar' },
-    { id: 'recommendations', label: 'Recommendations', icon: 'mdi:star' },
-    { id: 'networking', label: 'Networking', icon: 'mdi:account-group' },
-    { id: 'settings', label: 'Settings', icon: 'mdi:cog' }
-  ];
-
   return (
-    <>
-      <div className="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-24">
-        <h6 className="fw-semibold mb-0">👤 Attendee Dashboard</h6>
-      </div>
-
-      {/* Tabs */}
-      <div className="card mb-24">
-        <div className="card-body p-0">
-          <ul className="nav nav-tabs border-bottom" role="tablist">
-            {tabs.map(tab => (
-              <li className="nav-item" key={tab.id}>
-                <button
-                  className={`nav-link ${activeTab === tab.id ? 'active' : ''}`}
-                  onClick={() => setActiveTab(tab.id)}
-                >
-                  <Icon icon={tab.icon} className="mr-2" />
-                  {tab.label}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
+    <DashboardLayout
+      title="👤 Attendee Dashboard"
+      subtitle="Welcome back! Here's your event overview."
+    >
+      {/* Tab Navigation */}
+      <div className="col-12">
+        <TabNavigation
+          tabs={tabs}
+          activeTab={activeTab}
+          onTabChange={setActiveTab}
+          variant="pills"
+        />
       </div>
 
       {/* Tab Content */}
-      <div className="tab-content">
+      <div className="col-12">
         {activeTab === 'overview' && renderOverview()}
         {activeTab === 'tickets' && renderMyTickets()}
         {activeTab === 'schedule' && renderSchedule()}
@@ -455,7 +475,7 @@ const AttendeeDashboard: React.FC = () => {
         {activeTab === 'networking' && renderNetworking()}
         {activeTab === 'settings' && renderSettings()}
       </div>
-    </>
+    </DashboardLayout>
   );
 };
 

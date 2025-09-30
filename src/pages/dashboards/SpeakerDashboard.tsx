@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import SoftBox from '../../components/ui/SoftBox';
-import SoftButton from '../../components/ui/SoftButton';
-import SoftTypography from '../../components/ui/SoftTypography';
-import SoftCard from '../../components/ui/SoftCard';
-import SoftBadge from '../../components/ui/SoftBadge';
 import { Icon } from '@iconify/react';
+import {
+  DashboardLayout,
+  GradientStatCard,
+  TabNavigation,
+  DataCard,
+  WowButton,
+  WowBadge,
+  WowInput
+} from '../../components/wowdash';
 import FileUpload from '../../components/upload/FileUpload';
 import FileList from '../../components/upload/FileList';
 import Loading from '../../components/ui/Loading';
@@ -154,11 +158,13 @@ const SpeakerDashboard: React.FC = () => {
     }
   };
 
-  const stats = [
-    { title: 'Total Sessions', value: sessions.length, icon: 'mdi:presentation', color: 'primary' },
-    { title: 'Total Attendees', value: sessions.reduce((sum, s) => sum + s.attendees, 0), icon: 'mdi:account-group', color: 'info' },
-    { title: 'Avg Rating', value: '4.8', icon: 'mdi:star', color: 'success' },
-    { title: 'Pending Q&A', value: questions.filter(q => !q.answered).length, icon: 'mdi:help-circle', color: 'warning' }
+  const tabs = [
+    { id: 'overview', label: 'Overview', icon: 'mdi:view-dashboard' },
+    { id: 'sessions', label: 'My Sessions', icon: 'mdi:presentation', badge: sessions.length },
+    { id: 'materials', label: 'Materials', icon: 'mdi:file-document', badge: materialsFromDB.length },
+    { id: 'engagement', label: 'Q&A', icon: 'mdi:chat', badge: questions.filter(q => !q.answered).length },
+    { id: 'feedback', label: 'Feedback', icon: 'mdi:star' },
+    { id: 'settings', label: 'Settings', icon: 'mdi:cog' }
   ];
 
   const handleAnswerQuestion = (questionId: string, answer: string) => {
@@ -176,397 +182,353 @@ const SpeakerDashboard: React.FC = () => {
   };
 
   const renderOverview = () => (
-    <SoftBox>
+    <>
       {/* Stats Cards */}
-      <SoftBox display="flex" className="row row-cols-1 row-cols-sm-2 row-cols-lg-4 gy-4 mb-4">
-        {stats.map((stat, index) => (
-          <div className="col" key={index}>
-            <SoftCard variant="gradient" gradientType={stat.color as any}>
-              <SoftBox textAlign="center">
-                <Icon icon={stat.icon} className="text-5xl mb-3" />
-                <SoftTypography variant="h3" color="white" fontWeight="bold">
-                  {stat.value}
-                </SoftTypography>
-                <SoftTypography variant="body2" color="white">
-                  {stat.title}
-                </SoftTypography>
-              </SoftBox>
-            </SoftCard>
-          </div>
-        ))}
-      </SoftBox>
+      <div className="row row-cols-xxxl-5 row-cols-lg-3 row-cols-sm-2 row-cols-1 gy-4 mb-4">
+        <GradientStatCard
+          title="Total Sessions"
+          value={sessions.length}
+          icon="mdi:presentation"
+          iconBgColor="bg-cyan"
+          gradientClass="bg-gradient-start-1"
+          trend={{
+            value: `${sessions.filter(s => s.status === 'upcoming').length}`,
+            isPositive: true,
+            label: 'Upcoming'
+          }}
+        />
+        <GradientStatCard
+          title="Total Attendees"
+          value={sessions.reduce((sum, s) => sum + s.attendees, 0)}
+          icon="mdi:account-group"
+          iconBgColor="bg-purple"
+          gradientClass="bg-gradient-start-2"
+          trend={{
+            value: '+15%',
+            isPositive: true,
+            label: 'This month'
+          }}
+        />
+        <GradientStatCard
+          title="Avg Rating"
+          value="4.8"
+          icon="mdi:star"
+          iconBgColor="bg-success-main"
+          gradientClass="bg-gradient-start-4"
+          trend={{
+            value: '+0.3',
+            isPositive: true,
+            label: 'From last month'
+          }}
+        />
+        <GradientStatCard
+          title="Pending Q&A"
+          value={questions.filter(q => !q.answered).length}
+          icon="mdi:help-circle"
+          iconBgColor="bg-red"
+          gradientClass="bg-gradient-start-5"
+          trend={{
+            value: '2',
+            isPositive: false,
+            label: 'Need response'
+          }}
+        />
+        <GradientStatCard
+          title="Materials"
+          value={materialsFromDB.length}
+          icon="mdi:file-document"
+          iconBgColor="bg-info"
+          gradientClass="bg-gradient-start-3"
+          trend={{
+            value: '+3',
+            isPositive: true,
+            label: 'This week'
+          }}
+        />
+      </div>
 
-      {/* Upcoming Sessions */}
-      <SoftCard className="mb-4">
-        <SoftBox p={3}>
-          <SoftTypography variant="h5" fontWeight="bold" className="mb-4">
-            Upcoming Sessions
-          </SoftTypography>
-          <div className="table-responsive">
-            <table className="table">
-              <thead>
-                <tr>
-                  <th>Session</th>
-                  <th>Date & Time</th>
-                  <th>Location</th>
-                  <th>Attendees</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {sessions.filter(s => s.status === 'upcoming').map(session => (
-                  <tr key={session.id}>
-                    <td>
-                      <SoftTypography variant="body2" fontWeight="medium">
-                        {session.title}
-                      </SoftTypography>
-                    </td>
-                    <td>{session.date} at {session.time}</td>
-                    <td>{session.location}</td>
-                    <td>{session.attendees}</td>
-                    <td>
-                      <SoftBadge variant="success" size="sm">Upcoming</SoftBadge>
-                    </td>
+      {/* Content */}
+      <div className="row gy-4">
+        <div className="col-lg-8">
+          <DataCard title="Upcoming Sessions" subtitle="Your scheduled presentations">
+            <div className="table-responsive">
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th>Session</th>
+                    <th>Date & Time</th>
+                    <th>Location</th>
+                    <th>Attendees</th>
+                    <th>Status</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </SoftBox>
-      </SoftCard>
-
-      {/* Recent Feedback */}
-      <SoftCard>
-        <SoftBox p={3}>
-          <SoftTypography variant="h5" fontWeight="bold" className="mb-4">
-            Recent Feedback
-          </SoftTypography>
-          {feedbacks.slice(0, 3).map(feedback => (
-            <SoftBox key={feedback.id} className="mb-3 pb-3 border-bottom">
-              <SoftBox display="flex" justifyContent="space-between" alignItems="center" className="mb-2">
-                <SoftTypography variant="body2" fontWeight="medium">
-                  {feedback.attendeeName}
-                </SoftTypography>
-                <SoftBox display="flex" alignItems="center">
-                  {[...Array(5)].map((_, i) => (
-                    <Icon 
-                      key={i} 
-                      icon={i < feedback.rating ? 'mdi:star' : 'mdi:star-outline'} 
-                      className="text-warning-main"
-                    />
+                </thead>
+                <tbody>
+                  {sessions.filter(s => s.status === 'upcoming').map(session => (
+                    <tr key={session.id}>
+                      <td className="fw-medium">{session.title}</td>
+                      <td>{session.date} at {session.time}</td>
+                      <td>{session.location}</td>
+                      <td>{session.attendees}</td>
+                      <td>
+                        <WowBadge variant="success">Upcoming</WowBadge>
+                      </td>
+                    </tr>
                   ))}
-                </SoftBox>
-              </SoftBox>
-              <SoftTypography variant="caption" color="secondary">
-                {feedback.comment}
-              </SoftTypography>
-            </SoftBox>
-          ))}
-        </SoftBox>
-      </SoftCard>
-    </SoftBox>
+                </tbody>
+              </table>
+            </div>
+          </DataCard>
+        </div>
+
+        <div className="col-lg-4">
+          <DataCard title="Recent Feedback" subtitle="Latest session reviews">
+            {feedbacks.slice(0, 3).map(feedback => (
+              <div key={feedback.id} className="mb-3 pb-3 border-bottom">
+                <div className="d-flex justify-content-between align-items-center mb-2">
+                  <div className="fw-medium">{feedback.attendeeName}</div>
+                  <div className="d-flex align-items-center">
+                    {[...Array(5)].map((_, i) => (
+                      <Icon
+                        key={i}
+                        icon={i < feedback.rating ? 'mdi:star' : 'mdi:star-outline'}
+                        className="text-warning-main"
+                      />
+                    ))}
+                  </div>
+                </div>
+                <p className="text-sm text-neutral-600 mb-0">{feedback.comment}</p>
+              </div>
+            ))}
+          </DataCard>
+        </div>
+      </div>
+    </>
   );
 
   const renderMySessions = () => (
-    <SoftCard>
-      <SoftBox p={3}>
-        <SoftBox display="flex" justifyContent="space-between" alignItems="center" className="mb-4">
-          <SoftTypography variant="h5" fontWeight="bold">
-            My Sessions
-          </SoftTypography>
-          <SoftButton variant="gradient" color="primary">
-            <Icon icon="mdi:plus" className="mr-2" />
-            Add Session
-          </SoftButton>
-        </SoftBox>
-        
-        <div className="row gy-4">
-          {sessions.map(session => (
-            <div className="col-md-6" key={session.id}>
-              <SoftCard variant="default">
-                <SoftBox p={3}>
-                  <SoftBox display="flex" justifyContent="space-between" alignItems="flex-start" className="mb-3">
-                    <SoftTypography variant="h6" fontWeight="bold">
-                      {session.title}
-                    </SoftTypography>
-                    <SoftBadge 
-                      variant={session.status === 'upcoming' ? 'success' : session.status === 'completed' ? 'info' : 'error'}
-                      size="sm"
-                    >
-                      {session.status}
-                    </SoftBadge>
-                  </SoftBox>
-                  
-                  <SoftBox className="mb-3">
-                    <SoftBox display="flex" alignItems="center" className="mb-2">
-                      <Icon icon="mdi:calendar" className="mr-2 text-neutral-600" />
-                      <SoftTypography variant="caption">
-                        {session.date} at {session.time}
-                      </SoftTypography>
-                    </SoftBox>
-                    <SoftBox display="flex" alignItems="center" className="mb-2">
-                      <Icon icon="mdi:clock" className="mr-2 text-neutral-600" />
-                      <SoftTypography variant="caption">
-                        {session.duration}
-                      </SoftTypography>
-                    </SoftBox>
-                    <SoftBox display="flex" alignItems="center" className="mb-2">
-                      <Icon icon="mdi:map-marker" className="mr-2 text-neutral-600" />
-                      <SoftTypography variant="caption">
-                        {session.location}
-                      </SoftTypography>
-                    </SoftBox>
-                    <SoftBox display="flex" alignItems="center">
-                      <Icon icon="mdi:account-group" className="mr-2 text-neutral-600" />
-                      <SoftTypography variant="caption">
-                        {session.attendees} attendees
-                      </SoftTypography>
-                    </SoftBox>
-                  </SoftBox>
-                  
-                  <SoftBox display="flex" className="gap-2">
-                    <SoftButton variant="outline" color="primary" size="sm">
-                      Edit
-                    </SoftButton>
-                    <SoftButton variant="outline" color="info" size="sm">
-                      View Details
-                    </SoftButton>
-                  </SoftBox>
-                </SoftBox>
-              </SoftCard>
+    <DataCard
+      title="My Sessions"
+      subtitle="Manage your presentations"
+      headerAction={
+        <WowButton variant="primary" size="sm">
+          <Icon icon="mdi:plus" className="mr-2" />
+          Add Session
+        </WowButton>
+      }
+    >
+      <div className="row gy-4">
+        {sessions.map(session => (
+          <div className="col-md-6" key={session.id}>
+            <div className="card border">
+              <div className="card-body">
+                <div className="d-flex justify-content-between align-items-start mb-3">
+                  <h6 className="fw-bold mb-0">{session.title}</h6>
+                  <WowBadge
+                    variant={session.status === 'upcoming' ? 'success' : session.status === 'completed' ? 'info' : 'danger'}
+                  >
+                    {session.status}
+                  </WowBadge>
+                </div>
+
+                <div className="mb-3">
+                  <div className="d-flex align-items-center mb-2">
+                    <Icon icon="mdi:calendar" className="mr-2 text-neutral-600" />
+                    <span className="text-sm">{session.date} at {session.time}</span>
+                  </div>
+                  <div className="d-flex align-items-center mb-2">
+                    <Icon icon="mdi:clock" className="mr-2 text-neutral-600" />
+                    <span className="text-sm">{session.duration}</span>
+                  </div>
+                  <div className="d-flex align-items-center mb-2">
+                    <Icon icon="mdi:map-marker" className="mr-2 text-neutral-600" />
+                    <span className="text-sm">{session.location}</span>
+                  </div>
+                  <div className="d-flex align-items-center">
+                    <Icon icon="mdi:account-group" className="mr-2 text-neutral-600" />
+                    <span className="text-sm">{session.attendees} attendees</span>
+                  </div>
+                </div>
+
+                <div className="d-flex gap-2">
+                  <WowButton variant="primary" size="sm">
+                    Edit
+                  </WowButton>
+                  <WowButton variant="info" size="sm">
+                    View Details
+                  </WowButton>
+                </div>
+              </div>
             </div>
-          ))}
-        </div>
-      </SoftBox>
-    </SoftCard>
+          </div>
+        ))}
+      </div>
+    </DataCard>
   );
 
   const renderMaterials = () => (
-    <SoftBox>
+    <>
       <ToastContainer />
 
       {/* Upload Section */}
-      <SoftCard className="mb-4">
-        <SoftBox p={3}>
-          <SoftTypography variant="h5" fontWeight="bold" className="mb-4">
-            Upload Materials
-          </SoftTypography>
-          <FileUpload
-            sessionId={sessions[0]?.id || 'default-session'}
-            onUploadComplete={(file) => {
-              showSuccess('File uploaded successfully!');
-              fetchMaterials();
-            }}
-            maxSizeMB={10}
-          />
-        </SoftBox>
-      </SoftCard>
-
-      {/* Files List Section */}
-      <SoftCard>
-        <SoftBox p={3}>
-          <SoftTypography variant="h5" fontWeight="bold" className="mb-4">
-            Uploaded Materials
-          </SoftTypography>
-          {loadingMaterials ? (
-            <Loading message="Loading materials..." />
-          ) : (
-            <FileList
-              files={materialsFromDB.map(m => ({
-                id: m.id,
-                name: m.file_name,
-                type: m.file_type,
-                url: m.file_url,
-                upload_date: m.created_at
-              }))}
-              onFileDeleted={(fileId) => {
-                showSuccess('File deleted successfully!');
+      <div className="row gy-4">
+        <div className="col-12">
+          <DataCard title="Upload Materials" subtitle="Share resources with attendees">
+            <FileUpload
+              sessionId={sessions[0]?.id || 'default-session'}
+              onUploadComplete={(file) => {
+                showSuccess('File uploaded successfully!');
                 fetchMaterials();
               }}
+              maxSizeMB={10}
             />
-          )}
-        </SoftBox>
-      </SoftCard>
-    </SoftBox>
+          </DataCard>
+        </div>
+
+        {/* Files List Section */}
+        <div className="col-12">
+          <DataCard title="Uploaded Materials" subtitle="Manage your session resources">
+            {loadingMaterials ? (
+              <Loading message="Loading materials..." />
+            ) : (
+              <FileList
+                files={materialsFromDB.map(m => ({
+                  id: m.id,
+                  name: m.file_name,
+                  type: m.file_type,
+                  url: m.file_url,
+                  upload_date: m.created_at
+                }))}
+                onFileDeleted={(fileId) => {
+                  showSuccess('File deleted successfully!');
+                  fetchMaterials();
+                }}
+              />
+            )}
+          </DataCard>
+        </div>
+      </div>
+    </>
   );
 
   const renderEngagement = () => (
-    <SoftCard>
-      <SoftBox p={3}>
-        <SoftTypography variant="h5" fontWeight="bold" className="mb-4">
-          Q&A and Engagement
-        </SoftTypography>
+    <DataCard title="Q&A and Engagement" subtitle="Answer attendee questions">
+      {questions.map(question => (
+        <div key={question.id} className="mb-4 pb-4 border-bottom">
+          <div className="d-flex justify-content-between align-items-start mb-2">
+            <div>
+              <div className="fw-bold mb-1">{question.question}</div>
+              <div className="text-sm text-neutral-600">Asked by {question.askedBy}</div>
+            </div>
+            <WowBadge variant={question.answered ? 'success' : 'warning'}>
+              {question.answered ? 'Answered' : 'Pending'}
+            </WowBadge>
+          </div>
 
-        {questions.map(question => (
-          <SoftBox key={question.id} className="mb-4 pb-4 border-bottom">
-            <SoftBox display="flex" justifyContent="space-between" alignItems="flex-start" className="mb-2">
-              <SoftBox>
-                <SoftTypography variant="body2" fontWeight="bold" className="mb-1">
-                  {question.question}
-                </SoftTypography>
-                <SoftTypography variant="caption" color="secondary">
-                  Asked by {question.askedBy}
-                </SoftTypography>
-              </SoftBox>
-              <SoftBadge variant={question.answered ? 'success' : 'warning'} size="sm">
-                {question.answered ? 'Answered' : 'Pending'}
-              </SoftBadge>
-            </SoftBox>
-
-            {question.answered ? (
-              <SoftBox className="mt-3 p-3 bg-light rounded">
-                <SoftTypography variant="caption" fontWeight="medium" className="mb-1">
-                  Your Answer:
-                </SoftTypography>
-                <SoftTypography variant="caption">
-                  {question.answer}
-                </SoftTypography>
-              </SoftBox>
-            ) : (
-              <SoftBox className="mt-3">
-                <textarea
-                  className="form-control mb-2"
-                  rows={3}
-                  placeholder="Type your answer..."
-                />
-                <SoftButton
-                  variant="gradient"
-                  color="primary"
-                  size="sm"
-                  onClick={() => handleAnswerQuestion(question.id, 'Sample answer')}
-                >
-                  Submit Answer
-                </SoftButton>
-              </SoftBox>
-            )}
-          </SoftBox>
-        ))}
-      </SoftBox>
-    </SoftCard>
+          {question.answered ? (
+            <div className="mt-3 p-3 bg-light rounded">
+              <div className="text-sm fw-medium mb-1">Your Answer:</div>
+              <div className="text-sm">{question.answer}</div>
+            </div>
+          ) : (
+            <div className="mt-3">
+              <textarea
+                className="form-control mb-2"
+                rows={3}
+                placeholder="Type your answer..."
+              />
+              <WowButton
+                variant="primary"
+                size="sm"
+                onClick={() => handleAnswerQuestion(question.id, 'Sample answer')}
+              >
+                Submit Answer
+              </WowButton>
+            </div>
+          )}
+        </div>
+      ))}
+    </DataCard>
   );
 
   const renderFeedback = () => (
-    <SoftCard>
-      <SoftBox p={3}>
-        <SoftTypography variant="h5" fontWeight="bold" className="mb-4">
-          Session Feedback
-        </SoftTypography>
-
-        <div className="row gy-4">
-          {feedbacks.map(feedback => (
-            <div className="col-md-6" key={feedback.id}>
-              <SoftCard variant="default">
-                <SoftBox p={3}>
-                  <SoftBox display="flex" justifyContent="space-between" alignItems="center" className="mb-3">
-                    <SoftTypography variant="body2" fontWeight="bold">
-                      {feedback.attendeeName}
-                    </SoftTypography>
-                    <SoftBox display="flex" alignItems="center">
-                      {[...Array(5)].map((_, i) => (
-                        <Icon
-                          key={i}
-                          icon={i < feedback.rating ? 'mdi:star' : 'mdi:star-outline'}
-                          className="text-warning-main"
-                        />
-                      ))}
-                    </SoftBox>
-                  </SoftBox>
-                  <SoftTypography variant="caption" color="secondary" className="mb-2">
-                    {feedback.comment}
-                  </SoftTypography>
-                  <SoftTypography variant="caption" color="secondary">
-                    {feedback.date}
-                  </SoftTypography>
-                </SoftBox>
-              </SoftCard>
+    <DataCard title="Session Feedback" subtitle="Reviews from attendees">
+      <div className="row gy-4">
+        {feedbacks.map(feedback => (
+          <div className="col-md-6" key={feedback.id}>
+            <div className="card border">
+              <div className="card-body">
+                <div className="d-flex justify-content-between align-items-center mb-3">
+                  <div className="fw-bold">{feedback.attendeeName}</div>
+                  <div className="d-flex align-items-center">
+                    {[...Array(5)].map((_, i) => (
+                      <Icon
+                        key={i}
+                        icon={i < feedback.rating ? 'mdi:star' : 'mdi:star-outline'}
+                        className="text-warning-main"
+                      />
+                    ))}
+                  </div>
+                </div>
+                <p className="text-sm text-neutral-600 mb-2">{feedback.comment}</p>
+                <p className="text-xs text-neutral-500 mb-0">{feedback.date}</p>
+              </div>
             </div>
-          ))}
-        </div>
-      </SoftBox>
-    </SoftCard>
+          </div>
+        ))}
+      </div>
+    </DataCard>
   );
 
   const renderSettings = () => (
-    <SoftCard>
-      <SoftBox p={3}>
-        <SoftTypography variant="h5" fontWeight="bold" className="mb-4">
-          Speaker Profile Settings
-        </SoftTypography>
-
-        <div className="row gy-4">
-          <div className="col-md-6">
-            <label className="form-label">Full Name</label>
-            <input type="text" className="form-control" defaultValue="Dr. Sarah Johnson" />
-          </div>
-          <div className="col-md-6">
-            <label className="form-label">Email</label>
-            <input type="email" className="form-control" defaultValue="sarah.johnson@example.com" />
-          </div>
-          <div className="col-md-6">
-            <label className="form-label">Phone</label>
-            <input type="tel" className="form-control" defaultValue="+1 234 567 8900" />
-          </div>
-          <div className="col-md-6">
-            <label className="form-label">Expertise</label>
-            <input type="text" className="form-control" defaultValue="AI & Machine Learning" />
-          </div>
-          <div className="col-12">
-            <label className="form-label">Bio</label>
-            <textarea className="form-control" rows={4} defaultValue="Expert in AI and Machine Learning with 10+ years of experience..." />
-          </div>
-          <div className="col-12">
-            <SoftBox display="flex" className="gap-3">
-              <SoftButton variant="gradient" color="primary">
-                Save Changes
-              </SoftButton>
-              <SoftButton variant="outline" color="secondary">
-                Cancel
-              </SoftButton>
-            </SoftBox>
+    <DataCard title="Speaker Profile Settings" subtitle="Manage your profile information">
+      <div className="row gy-4">
+        <div className="col-md-6">
+          <WowInput label="Full Name" value="Dr. Sarah Johnson" />
+        </div>
+        <div className="col-md-6">
+          <WowInput label="Email" value="sarah.johnson@example.com" type="email" />
+        </div>
+        <div className="col-md-6">
+          <WowInput label="Phone" value="+1 234 567 8900" />
+        </div>
+        <div className="col-md-6">
+          <WowInput label="Expertise" value="AI & Machine Learning" />
+        </div>
+        <div className="col-12">
+          <label className="form-label">Bio</label>
+          <textarea className="form-control" rows={4} defaultValue="Expert in AI and Machine Learning with 10+ years of experience..." />
+        </div>
+        <div className="col-12">
+          <div className="d-flex gap-3">
+            <WowButton variant="primary">
+              Save Changes
+            </WowButton>
+            <WowButton variant="secondary">
+              Cancel
+            </WowButton>
           </div>
         </div>
-      </SoftBox>
-    </SoftCard>
+      </div>
+    </DataCard>
   );
 
-  const tabs = [
-    { id: 'overview', label: 'Overview', icon: 'mdi:view-dashboard' },
-    { id: 'sessions', label: 'My Sessions', icon: 'mdi:presentation' },
-    { id: 'materials', label: 'Materials', icon: 'mdi:file-document' },
-    { id: 'engagement', label: 'Engagement', icon: 'mdi:chat' },
-    { id: 'feedback', label: 'Feedback', icon: 'mdi:star' },
-    { id: 'settings', label: 'Settings', icon: 'mdi:cog' }
-  ];
-
   return (
-    <SoftBox>
-      <SoftBox display="flex" justifyContent="space-between" alignItems="center" className="mb-4">
-        <SoftTypography variant="h4" fontWeight="bold">
-          🎤 Speaker Dashboard
-        </SoftTypography>
-      </SoftBox>
-
-      {/* Tabs */}
-      <SoftCard className="mb-4">
-        <SoftBox p={0}>
-          <ul className="nav nav-tabs border-bottom" role="tablist">
-            {tabs.map(tab => (
-              <li className="nav-item" key={tab.id}>
-                <button
-                  className={`nav-link ${activeTab === tab.id ? 'active' : ''}`}
-                  onClick={() => setActiveTab(tab.id)}
-                >
-                  <Icon icon={tab.icon} className="mr-2" />
-                  {tab.label}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </SoftBox>
-      </SoftCard>
+    <DashboardLayout
+      title="🎤 Speaker Dashboard"
+      subtitle="Manage your sessions and engage with attendees"
+    >
+      {/* Tab Navigation */}
+      <div className="col-12">
+        <TabNavigation
+          tabs={tabs}
+          activeTab={activeTab}
+          onTabChange={setActiveTab}
+          variant="pills"
+        />
+      </div>
 
       {/* Tab Content */}
-      <div className="tab-content">
+      <div className="col-12">
         {activeTab === 'overview' && renderOverview()}
         {activeTab === 'sessions' && renderMySessions()}
         {activeTab === 'materials' && renderMaterials()}
@@ -574,7 +536,7 @@ const SpeakerDashboard: React.FC = () => {
         {activeTab === 'feedback' && renderFeedback()}
         {activeTab === 'settings' && renderSettings()}
       </div>
-    </SoftBox>
+    </DashboardLayout>
   );
 };
 

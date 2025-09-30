@@ -4,4 +4,8 @@ export { default as WowCard } from './WowCard';
 export { default as WowInput } from './WowInput';
 export { default as WowBadge } from './WowBadge';
 export { default as WowTable } from './WowTable';
+export { default as DashboardLayout } from './DashboardLayout';
+export { default as GradientStatCard } from './GradientStatCard';
+export { default as TabNavigation } from './TabNavigation';
+export { default as DataCard } from './DataCard';
 

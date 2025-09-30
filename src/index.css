@@ -74,22 +74,92 @@
   /* WowDash Gradient Backgrounds - Using direct background-image */
   .bg-gradient-start-1 {
     background-image: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
   }
 
   .bg-gradient-start-2 {
     background-image: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: white;
   }
 
   .bg-gradient-start-3 {
     background-image: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    color: white;
   }
 
   .bg-gradient-start-4 {
     background-image: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+    color: white;
   }
 
   .bg-gradient-start-5 {
     background-image: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+    color: white;
+  }
+
+  /* WowDash Spacing Utilities */
+  .p-20 {
+    padding: 1.25rem;
+  }
+
+  .p-24 {
+    padding: 1.5rem;
+  }
+
+  .px-24 {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  .py-16 {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+
+  .mt-12 {
+    margin-top: 0.75rem;
+  }
+
+  .mb-24 {
+    margin-bottom: 1.5rem;
+  }
+
+  .gap-2 {
+    gap: 0.5rem;
+  }
+
+  .gap-3 {
+    gap: 0.75rem;
+  }
+
+  /* WowDash Size Utilities */
+  .w-50-px {
+    width: 50px;
+  }
+
+  .h-50-px {
+    height: 50px;
+  }
+
+  /* WowDash Text Colors */
+  .text-primary-light {
+    color: #D0D5DD;
+  }
+
+  .text-success-main {
+    color: #22c55e;
+  }
+
+  .text-danger-main {
+    color: #ef4444;
+  }
+
+  .text-info-main {
+    color: #3b82f6;
+  }
+
+  .text-warning-main {
+    color: #f59e0b;
   }
 
   /* WowDash Button Styles */
@@ -236,5 +306,90 @@
 
   .badge-info {
     @apply bg-info-100 text-info-700;
+  }
+
+  /* WowDash Dashboard Wrapper */
+  .dashboard-main-wrapper {
+    @apply w-full;
+  }
+
+  /* WowDash Nav Pills */
+  .nav-pills .nav-link {
+    @apply px-4 py-2 rounded-lg font-medium transition-all duration-200;
+    color: #6B7280;
+  }
+
+  .nav-pills .nav-link.active {
+    @apply bg-primary-500 text-white;
+  }
+
+  .nav-pills .nav-link:hover:not(.active) {
+    @apply bg-neutral-100;
+  }
+
+  /* WowDash Table Styles */
+  .table-responsive {
+    @apply overflow-x-auto;
+  }
+
+  .table {
+    @apply w-full;
+  }
+
+  .table thead th {
+    @apply bg-neutral-50 text-neutral-700 font-semibold text-sm py-3 px-4 border-b border-neutral-200;
+  }
+
+  .table tbody td {
+    @apply py-3 px-4 border-b border-neutral-100 text-neutral-800;
+  }
+
+  .table tbody tr:hover {
+    @apply bg-neutral-50 transition-colors duration-150;
+  }
+
+  /* WowDash Form Controls */
+  .form-control {
+    @apply w-full px-3 py-2 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200;
+  }
+
+  .form-label {
+    @apply block text-sm font-medium text-neutral-700 mb-2;
+  }
+
+  /* WowDash Responsive Grid */
+  .row-cols-xxxl-5 > * {
+    flex: 0 0 auto;
+    width: 100%;
+  }
+
+  @media (min-width: 1400px) {
+    .row-cols-xxxl-5 > * {
+      width: 20%;
+    }
+  }
+
+  /* WowDash Additional Spacing */
+  .p-24 {
+    padding: 1.5rem;
+  }
+
+  .px-24 {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  .py-16 {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+
+  .mb-24 {
+    margin-bottom: 1.5rem;
+  }
+
+  /* WowDash Card Header */
+  .card-header {
+    @apply bg-white border-b border-neutral-200;
   }
 }

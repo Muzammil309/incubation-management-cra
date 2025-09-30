@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
-import SoftBox from '../../components/ui/SoftBox';
-import SoftButton from '../../components/ui/SoftButton';
-import SoftTypography from '../../components/ui/SoftTypography';
-import SoftCard from '../../components/ui/SoftCard';
-import SoftBadge from '../../components/ui/SoftBadge';
 import { Icon } from '@iconify/react';
+import {
+  DashboardLayout,
+  GradientStatCard,
+  TabNavigation,
+  DataCard,
+  WowButton,
+  WowBadge,
+  WowInput
+} from '../../components/wowdash';
 import { AnalyticsDashboard } from '../../components/charts/AnalyticsCharts';
 
 interface Event {
@@ -113,11 +117,14 @@ const AdminDashboard: React.FC = () => {
     }
   ]);
 
-  const stats = [
-    { title: 'Total Events', value: events.length, icon: 'mdi:calendar-multiple', color: 'primary', trend: '+3' },
-    { title: 'Total Users', value: users.length, icon: 'mdi:account-group', color: 'info', trend: '+12' },
-    { title: 'Tickets Sold', value: tickets.reduce((sum, t) => sum + t.sold, 0), icon: 'mdi:ticket', color: 'success', trend: '+45' },
-    { title: 'Revenue', value: '$12,450', icon: 'mdi:currency-usd', color: 'warning', trend: '+$2,340' }
+  const tabs = [
+    { id: 'overview', label: 'Overview', icon: 'mdi:view-dashboard' },
+    { id: 'events', label: 'Events', icon: 'mdi:calendar-multiple', badge: events.length },
+    { id: 'users', label: 'Users', icon: 'mdi:account-group', badge: users.length },
+    { id: 'tickets', label: 'Tickets', icon: 'mdi:ticket' },
+    { id: 'analytics', label: 'Analytics', icon: 'mdi:chart-bar' },
+    { id: 'messages', label: 'Messages', icon: 'mdi:email' },
+    { id: 'settings', label: 'Settings', icon: 'mdi:cog' }
   ];
 
   const handleCreateEvent = () => {
@@ -133,516 +140,470 @@ const AdminDashboard: React.FC = () => {
   };
 
   const renderOverview = () => (
-    <SoftBox>
+    <>
       {/* Stats Cards */}
-      <SoftBox className="row row-cols-1 row-cols-sm-2 row-cols-lg-4 gy-4 mb-4">
-        {stats.map((stat, index) => (
-          <div className="col" key={index}>
-            <SoftCard variant="gradient" gradientType={stat.color as any}>
-              <SoftBox p={3} textAlign="center">
-                <Icon icon={stat.icon} className="text-5xl mb-3" />
-                <SoftTypography variant="h3" color="white" fontWeight="bold">
-                  {stat.value}
-                </SoftTypography>
-                <SoftTypography variant="body2" color="white" className="mb-2">
-                  {stat.title}
-                </SoftTypography>
-                <SoftTypography variant="caption" color="white">
-                  {stat.trend} this month
-                </SoftTypography>
-              </SoftBox>
-            </SoftCard>
-          </div>
-        ))}
-      </SoftBox>
+      <div className="row row-cols-xxxl-5 row-cols-lg-3 row-cols-sm-2 row-cols-1 gy-4 mb-4">
+        <GradientStatCard
+          title="Total Events"
+          value={events.length}
+          icon="mdi:calendar-multiple"
+          iconBgColor="bg-cyan"
+          gradientClass="bg-gradient-start-1"
+          trend={{
+            value: '+3',
+            isPositive: true,
+            label: 'This month'
+          }}
+        />
+        <GradientStatCard
+          title="Total Users"
+          value={users.length}
+          icon="mdi:account-group"
+          iconBgColor="bg-purple"
+          gradientClass="bg-gradient-start-2"
+          trend={{
+            value: '+12',
+            isPositive: true,
+            label: 'This month'
+          }}
+        />
+        <GradientStatCard
+          title="Tickets Sold"
+          value={tickets.reduce((sum, t) => sum + t.sold, 0)}
+          icon="mdi:ticket"
+          iconBgColor="bg-success-main"
+          gradientClass="bg-gradient-start-4"
+          trend={{
+            value: '+45',
+            isPositive: true,
+            label: 'This month'
+          }}
+        />
+        <GradientStatCard
+          title="Revenue"
+          value="$12,450"
+          icon="mdi:currency-usd"
+          iconBgColor="bg-info"
+          gradientClass="bg-gradient-start-3"
+          trend={{
+            value: '+$2,340',
+            isPositive: true,
+            label: 'This month'
+          }}
+        />
+        <GradientStatCard
+          title="Active Events"
+          value={events.filter(e => e.status === 'published').length}
+          icon="mdi:calendar-check"
+          iconBgColor="bg-red"
+          gradientClass="bg-gradient-start-5"
+          trend={{
+            value: '2',
+            isPositive: true,
+            label: 'Published'
+          }}
+        />
+      </div>
 
-      {/* Recent Events */}
+      {/* Content */}
       <div className="row gy-4">
         <div className="col-lg-8">
-          <SoftCard>
-            <SoftBox p={3}>
-              <SoftTypography variant="h5" fontWeight="bold" className="mb-4">
-                Recent Events
-              </SoftTypography>
-              <div className="table-responsive">
-                <table className="table">
-                  <thead>
-                    <tr>
-                      <th>Event Name</th>
-                      <th>Date</th>
-                      <th>Attendees</th>
-                      <th>Status</th>
-                      <th>Actions</th>
+          <DataCard title="Recent Events" subtitle="Latest event activities">
+            <div className="table-responsive">
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th>Event Name</th>
+                    <th>Date</th>
+                    <th>Attendees</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {events.slice(0, 5).map(event => (
+                    <tr key={event.id}>
+                      <td className="fw-medium">{event.name}</td>
+                      <td>{event.date}</td>
+                      <td>{event.attendees}/{event.capacity}</td>
+                      <td>
+                        <WowBadge
+                          variant={
+                            event.status === 'published' ? 'success' :
+                            event.status === 'draft' ? 'warning' :
+                            event.status === 'completed' ? 'info' : 'danger'
+                          }
+                        >
+                          {event.status}
+                        </WowBadge>
+                      </td>
+                      <td>
+                        <div className="d-flex gap-2">
+                          <button className="btn btn-sm btn-outline-primary">
+                            <Icon icon="mdi:pencil" />
+                          </button>
+                          <button className="btn btn-sm btn-outline-danger">
+                            <Icon icon="mdi:delete" />
+                          </button>
+                        </div>
+                      </td>
                     </tr>
-                  </thead>
-                  <tbody>
-                    {events.slice(0, 5).map(event => (
-                      <tr key={event.id}>
-                        <td>
-                          <SoftTypography variant="body2" fontWeight="medium">
-                            {event.name}
-                          </SoftTypography>
-                        </td>
-                        <td>{event.date}</td>
-                        <td>{event.attendees}/{event.capacity}</td>
-                        <td>
-                          <SoftBadge 
-                            variant={
-                              event.status === 'published' ? 'success' :
-                              event.status === 'draft' ? 'warning' :
-                              event.status === 'completed' ? 'info' : 'error'
-                            }
-                            size="sm"
-                          >
-                            {event.status}
-                          </SoftBadge>
-                        </td>
-                        <td>
-                          <SoftBox display="flex" className="gap-2">
-                            <button className="btn btn-sm btn-outline-primary">
-                              <Icon icon="mdi:pencil" />
-                            </button>
-                            <button className="btn btn-sm btn-outline-danger">
-                              <Icon icon="mdi:delete" />
-                            </button>
-                          </SoftBox>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </SoftBox>
-          </SoftCard>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </DataCard>
         </div>
 
         <div className="col-lg-4">
-          <SoftCard>
-            <SoftBox p={3}>
-              <SoftTypography variant="h5" fontWeight="bold" className="mb-4">
-                Quick Actions
-              </SoftTypography>
-              <SoftBox display="flex" className="flex-column gap-3">
-                <SoftButton variant="gradient" color="primary" fullWidth onClick={handleCreateEvent}>
-                  <Icon icon="mdi:plus" className="mr-2" />
-                  Create Event
-                </SoftButton>
-                <SoftButton variant="gradient" color="info" fullWidth>
-                  <Icon icon="mdi:account-plus" className="mr-2" />
-                  Add User
-                </SoftButton>
-                <SoftButton variant="gradient" color="success" fullWidth>
-                  <Icon icon="mdi:email" className="mr-2" />
-                  Send Announcement
-                </SoftButton>
-                <SoftButton variant="gradient" color="warning" fullWidth>
-                  <Icon icon="mdi:chart-bar" className="mr-2" />
-                  View Analytics
-                </SoftButton>
-              </SoftBox>
-            </SoftBox>
-          </SoftCard>
+          <DataCard title="Quick Actions">
+            <div className="d-flex flex-column gap-3">
+              <WowButton variant="primary" fullWidth onClick={handleCreateEvent}>
+                <Icon icon="mdi:plus" className="mr-2" />
+                Create Event
+              </WowButton>
+              <WowButton variant="info" fullWidth>
+                <Icon icon="mdi:account-plus" className="mr-2" />
+                Add User
+              </WowButton>
+              <WowButton variant="success" fullWidth>
+                <Icon icon="mdi:email" className="mr-2" />
+                Send Announcement
+              </WowButton>
+              <WowButton variant="warning" fullWidth>
+                <Icon icon="mdi:chart-bar" className="mr-2" />
+                View Analytics
+              </WowButton>
+            </div>
+          </DataCard>
         </div>
       </div>
-    </SoftBox>
+    </>
   );
 
   const renderEvents = () => (
-    <SoftCard>
-      <SoftBox p={3}>
-        <SoftBox display="flex" justifyContent="space-between" alignItems="center" className="mb-4">
-          <SoftTypography variant="h5" fontWeight="bold">
-            Event Management
-          </SoftTypography>
-          <SoftButton variant="gradient" color="primary" onClick={handleCreateEvent}>
-            <Icon icon="mdi:plus" className="mr-2" />
-            Create Event
-          </SoftButton>
-        </SoftBox>
-        
-        <div className="row gy-4">
-          {events.map(event => (
-            <div className="col-md-6" key={event.id}>
-              <SoftCard variant="default">
-                <SoftBox p={3}>
-                  <SoftBox display="flex" justifyContent="space-between" alignItems="flex-start" className="mb-3">
-                    <SoftTypography variant="h6" fontWeight="bold">
-                      {event.name}
-                    </SoftTypography>
-                    <SoftBadge 
-                      variant={
-                        event.status === 'published' ? 'success' :
-                        event.status === 'draft' ? 'warning' :
-                        event.status === 'completed' ? 'info' : 'error'
-                      }
-                      size="sm"
-                    >
-                      {event.status}
-                    </SoftBadge>
-                  </SoftBox>
-                  
-                  <SoftBox className="mb-3">
-                    <SoftBox display="flex" alignItems="center" className="mb-2">
-                      <Icon icon="mdi:calendar" className="mr-2 text-neutral-600" />
-                      <SoftTypography variant="caption">
-                        {event.date}
-                      </SoftTypography>
-                    </SoftBox>
-                    <SoftBox display="flex" alignItems="center">
-                      <Icon icon="mdi:account-group" className="mr-2 text-neutral-600" />
-                      <SoftTypography variant="caption">
-                        {event.attendees}/{event.capacity} attendees
-                      </SoftTypography>
-                    </SoftBox>
-                  </SoftBox>
-                  
-                  <div className="progress mb-3" style={{ height: '8px' }}>
-                    <div 
-                      className="progress-bar bg-primary-500" 
-                      style={{ width: `${(event.attendees / event.capacity) * 100}%` }}
-                    />
+    <DataCard
+      title="Event Management"
+      subtitle="Create and manage events"
+      headerAction={
+        <WowButton variant="primary" size="sm" onClick={handleCreateEvent}>
+          <Icon icon="mdi:plus" className="mr-2" />
+          Create Event
+        </WowButton>
+      }
+    >
+      <div className="row gy-4">
+        {events.map(event => (
+          <div className="col-md-6" key={event.id}>
+            <div className="card border">
+              <div className="card-body">
+                <div className="d-flex justify-content-between align-items-start mb-3">
+                  <h6 className="fw-bold mb-0">{event.name}</h6>
+                  <WowBadge
+                    variant={
+                      event.status === 'published' ? 'success' :
+                      event.status === 'draft' ? 'warning' :
+                      event.status === 'completed' ? 'info' : 'danger'
+                    }
+                  >
+                    {event.status}
+                  </WowBadge>
+                </div>
+
+                <div className="mb-3">
+                  <div className="d-flex align-items-center mb-2">
+                    <Icon icon="mdi:calendar" className="mr-2 text-neutral-600" />
+                    <span className="text-sm">{event.date}</span>
                   </div>
-                  
-                  <SoftBox display="flex" className="gap-2">
-                    <SoftButton variant="outline" color="primary" size="sm" onClick={() => handleEditEvent(event.id)}>
-                      Edit
-                    </SoftButton>
-                    <SoftButton variant="outline" color="error" size="sm" onClick={() => handleDeleteEvent(event.id)}>
-                      Delete
-                    </SoftButton>
-                  </SoftBox>
-                </SoftBox>
-              </SoftCard>
+                  <div className="d-flex align-items-center">
+                    <Icon icon="mdi:account-group" className="mr-2 text-neutral-600" />
+                    <span className="text-sm">{event.attendees}/{event.capacity} attendees</span>
+                  </div>
+                </div>
+
+                <div className="progress mb-3" style={{ height: '8px' }}>
+                  <div
+                    className="progress-bar bg-primary-500"
+                    style={{ width: `${(event.attendees / event.capacity) * 100}%` }}
+                  />
+                </div>
+
+                <div className="d-flex gap-2">
+                  <WowButton variant="primary" size="sm" onClick={() => handleEditEvent(event.id)}>
+                    Edit
+                  </WowButton>
+                  <WowButton variant="danger" size="sm" onClick={() => handleDeleteEvent(event.id)}>
+                    Delete
+                  </WowButton>
+                </div>
+              </div>
             </div>
-          ))}
-        </div>
-      </SoftBox>
-    </SoftCard>
+          </div>
+        ))}
+      </div>
+    </DataCard>
   );
 
   const renderUsers = () => (
-    <SoftCard>
-      <SoftBox p={3}>
-        <SoftBox display="flex" justifyContent="space-between" alignItems="center" className="mb-4">
-          <SoftTypography variant="h5" fontWeight="bold">
-            User Management
-          </SoftTypography>
-          <SoftButton variant="gradient" color="primary">
-            <Icon icon="mdi:account-plus" className="mr-2" />
-            Add User
-          </SoftButton>
-        </SoftBox>
-
-        <div className="table-responsive">
-          <table className="table table-hover">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Role</th>
-                <th>Status</th>
-                <th>Joined</th>
-                <th>Actions</th>
+    <DataCard
+      title="User Management"
+      subtitle="Manage platform users"
+      headerAction={
+        <WowButton variant="primary" size="sm">
+          <Icon icon="mdi:account-plus" className="mr-2" />
+          Add User
+        </WowButton>
+      }
+    >
+      <div className="table-responsive">
+        <table className="table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Status</th>
+              <th>Joined</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {users.map(user => (
+              <tr key={user.id}>
+                <td className="fw-medium">{user.name}</td>
+                <td>{user.email}</td>
+                <td>
+                  <WowBadge
+                    variant={
+                      user.role === 'admin' ? 'danger' :
+                      user.role === 'speaker' ? 'info' : 'success'
+                    }
+                  >
+                    {user.role}
+                  </WowBadge>
+                </td>
+                <td>
+                  <WowBadge variant={user.status === 'active' ? 'success' : 'danger'}>
+                    {user.status}
+                  </WowBadge>
+                </td>
+                <td>{user.joinedDate}</td>
+                <td>
+                  <div className="d-flex gap-2">
+                    <button className="btn btn-sm btn-outline-primary">
+                      <Icon icon="mdi:pencil" />
+                    </button>
+                    <button className="btn btn-sm btn-outline-danger">
+                      <Icon icon="mdi:delete" />
+                    </button>
+                  </div>
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {users.map(user => (
-                <tr key={user.id}>
-                  <td>
-                    <SoftTypography variant="body2" fontWeight="medium">
-                      {user.name}
-                    </SoftTypography>
-                  </td>
-                  <td>{user.email}</td>
-                  <td>
-                    <SoftBadge
-                      variant={
-                        user.role === 'admin' ? 'error' :
-                        user.role === 'speaker' ? 'info' : 'success'
-                      }
-                      size="sm"
-                    >
-                      {user.role}
-                    </SoftBadge>
-                  </td>
-                  <td>
-                    <SoftBadge variant={user.status === 'active' ? 'success' : 'error'} size="sm">
-                      {user.status}
-                    </SoftBadge>
-                  </td>
-                  <td>{user.joinedDate}</td>
-                  <td>
-                    <SoftBox display="flex" className="gap-2">
-                      <button className="btn btn-sm btn-outline-primary">
-                        <Icon icon="mdi:pencil" />
-                      </button>
-                      <button className="btn btn-sm btn-outline-danger">
-                        <Icon icon="mdi:delete" />
-                      </button>
-                    </SoftBox>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </SoftBox>
-    </SoftCard>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </DataCard>
   );
 
   const renderTickets = () => (
-    <SoftCard>
-      <SoftBox p={3}>
-        <SoftTypography variant="h5" fontWeight="bold" className="mb-4">
-          Ticket Management
-        </SoftTypography>
-
-        <div className="table-responsive">
-          <table className="table table-hover">
-            <thead>
-              <tr>
-                <th>Event</th>
-                <th>Tier</th>
-                <th>Price</th>
-                <th>Sold</th>
-                <th>Available</th>
-                <th>Revenue</th>
-                <th>Actions</th>
+    <DataCard title="Ticket Management" subtitle="Manage event tickets and pricing">
+      <div className="table-responsive">
+        <table className="table">
+          <thead>
+            <tr>
+              <th>Event</th>
+              <th>Tier</th>
+              <th>Price</th>
+              <th>Sold</th>
+              <th>Available</th>
+              <th>Revenue</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {tickets.map(ticket => (
+              <tr key={ticket.id}>
+                <td className="fw-medium">{ticket.eventName}</td>
+                <td>
+                  <WowBadge variant="info">{ticket.tier}</WowBadge>
+                </td>
+                <td>${ticket.price}</td>
+                <td>{ticket.sold}</td>
+                <td>{ticket.available}</td>
+                <td className="fw-bold text-success-main">${ticket.sold * ticket.price}</td>
+                <td>
+                  <div className="d-flex gap-2">
+                    <button className="btn btn-sm btn-outline-primary">
+                      <Icon icon="mdi:pencil" />
+                    </button>
+                  </div>
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {tickets.map(ticket => (
-                <tr key={ticket.id}>
-                  <td>
-                    <SoftTypography variant="body2" fontWeight="medium">
-                      {ticket.eventName}
-                    </SoftTypography>
-                  </td>
-                  <td>
-                    <SoftBadge variant="info" size="sm">{ticket.tier}</SoftBadge>
-                  </td>
-                  <td>${ticket.price}</td>
-                  <td>{ticket.sold}</td>
-                  <td>{ticket.available}</td>
-                  <td className="fw-bold text-success-main">${ticket.sold * ticket.price}</td>
-                  <td>
-                    <SoftBox display="flex" className="gap-2">
-                      <button className="btn btn-sm btn-outline-primary">
-                        <Icon icon="mdi:pencil" />
-                      </button>
-                    </SoftBox>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </SoftBox>
-    </SoftCard>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </DataCard>
   );
 
   const renderAnalytics = () => (
-    <SoftBox>
-      <SoftTypography variant="h5" fontWeight="bold" className="mb-4">
-        Analytics Dashboard
-      </SoftTypography>
-
+    <>
       <div className="row gy-4 mb-4">
         <div className="col-md-3">
-          <SoftCard variant="gradient" gradientType="primary">
-            <SoftBox p={3} textAlign="center">
-              <SoftTypography variant="h4" color="white" fontWeight="bold">
-                {events.length}
-              </SoftTypography>
-              <SoftTypography variant="body2" color="white">
-                Total Events
-              </SoftTypography>
-            </SoftBox>
-          </SoftCard>
+          <GradientStatCard
+            title="Total Events"
+            value={events.length}
+            icon="mdi:calendar-multiple"
+            iconBgColor="bg-cyan"
+            gradientClass="bg-gradient-start-1"
+          />
         </div>
         <div className="col-md-3">
-          <SoftCard variant="gradient" gradientType="info">
-            <SoftBox p={3} textAlign="center">
-              <SoftTypography variant="h4" color="white" fontWeight="bold">
-                {users.length}
-              </SoftTypography>
-              <SoftTypography variant="body2" color="white">
-                Total Users
-              </SoftTypography>
-            </SoftBox>
-          </SoftCard>
+          <GradientStatCard
+            title="Total Users"
+            value={users.length}
+            icon="mdi:account-group"
+            iconBgColor="bg-info"
+            gradientClass="bg-gradient-start-3"
+          />
         </div>
         <div className="col-md-3">
-          <SoftCard variant="gradient" gradientType="success">
-            <SoftBox p={3} textAlign="center">
-              <SoftTypography variant="h4" color="white" fontWeight="bold">
-                {tickets.reduce((sum, t) => sum + t.sold, 0)}
-              </SoftTypography>
-              <SoftTypography variant="body2" color="white">
-                Tickets Sold
-              </SoftTypography>
-            </SoftBox>
-          </SoftCard>
+          <GradientStatCard
+            title="Tickets Sold"
+            value={tickets.reduce((sum, t) => sum + t.sold, 0)}
+            icon="mdi:ticket"
+            iconBgColor="bg-success-main"
+            gradientClass="bg-gradient-start-4"
+          />
         </div>
         <div className="col-md-3">
-          <SoftCard variant="gradient" gradientType="warning">
-            <SoftBox p={3} textAlign="center">
-              <SoftTypography variant="h4" color="white" fontWeight="bold">
-                $12,450
-              </SoftTypography>
-              <SoftTypography variant="body2" color="white">
-                Total Revenue
-              </SoftTypography>
-            </SoftBox>
-          </SoftCard>
+          <GradientStatCard
+            title="Total Revenue"
+            value="$12,450"
+            icon="mdi:currency-usd"
+            iconBgColor="bg-red"
+            gradientClass="bg-gradient-start-5"
+          />
         </div>
       </div>
 
       {/* Analytics Charts */}
-      <AnalyticsDashboard />
-    </SoftBox>
+      <div className="row">
+        <div className="col-12">
+          <DataCard title="Analytics Dashboard" subtitle="Detailed performance metrics">
+            <AnalyticsDashboard />
+          </DataCard>
+        </div>
+      </div>
+    </>
   );
 
   const renderMessages = () => (
-    <SoftCard>
-      <SoftBox p={3}>
-        <SoftBox display="flex" justifyContent="space-between" alignItems="center" className="mb-4">
-          <SoftTypography variant="h5" fontWeight="bold">
-            Announcements & Messages
-          </SoftTypography>
-          <SoftButton variant="gradient" color="primary">
-            <Icon icon="mdi:email-plus" className="mr-2" />
-            New Announcement
-          </SoftButton>
-        </SoftBox>
-
-        <div className="row gy-3">
-          <div className="col-12">
-            <label className="form-label fw-bold">Subject</label>
-            <input type="text" className="form-control" placeholder="Enter announcement subject" />
-          </div>
-          <div className="col-12">
-            <label className="form-label fw-bold">Message</label>
-            <textarea className="form-control" rows={6} placeholder="Enter your message..." />
-          </div>
-          <div className="col-12">
-            <label className="form-label fw-bold">Recipients</label>
-            <select className="form-select">
-              <option>All Users</option>
-              <option>Attendees Only</option>
-              <option>Speakers Only</option>
-              <option>Admins Only</option>
-            </select>
-          </div>
-          <div className="col-12">
-            <SoftButton variant="gradient" color="primary">
-              <Icon icon="mdi:send" className="mr-2" />
-              Send Announcement
-            </SoftButton>
-          </div>
+    <DataCard
+      title="Announcements & Messages"
+      subtitle="Send notifications to users"
+      headerAction={
+        <WowButton variant="primary" size="sm">
+          <Icon icon="mdi:email-plus" className="mr-2" />
+          New Announcement
+        </WowButton>
+      }
+    >
+      <div className="row gy-3">
+        <div className="col-12">
+          <WowInput label="Subject" placeholder="Enter announcement subject" />
         </div>
-      </SoftBox>
-    </SoftCard>
+        <div className="col-12">
+          <label className="form-label fw-bold">Message</label>
+          <textarea className="form-control" rows={6} placeholder="Enter your message..." />
+        </div>
+        <div className="col-12">
+          <label className="form-label fw-bold">Recipients</label>
+          <select className="form-select">
+            <option>All Users</option>
+            <option>Attendees Only</option>
+            <option>Speakers Only</option>
+            <option>Admins Only</option>
+          </select>
+        </div>
+        <div className="col-12">
+          <WowButton variant="primary">
+            <Icon icon="mdi:send" className="mr-2" />
+            Send Announcement
+          </WowButton>
+        </div>
+      </div>
+    </DataCard>
   );
 
   const renderSettings = () => (
-    <SoftCard>
-      <SoftBox p={3}>
-        <SoftTypography variant="h5" fontWeight="bold" className="mb-4">
-          System Settings
-        </SoftTypography>
-
-        <div className="row gy-4">
-          <div className="col-md-6">
-            <label className="form-label fw-bold">Organization Name</label>
-            <input type="text" className="form-control" defaultValue="Incubation Platform" />
-          </div>
-          <div className="col-md-6">
-            <label className="form-label fw-bold">Contact Email</label>
-            <input type="email" className="form-control" defaultValue="admin@incubation.com" />
-          </div>
-          <div className="col-md-6">
-            <label className="form-label fw-bold">Default Event Capacity</label>
-            <input type="number" className="form-control" defaultValue="100" />
-          </div>
-          <div className="col-md-6">
-            <label className="form-label fw-bold">Currency</label>
-            <select className="form-select">
-              <option>USD ($)</option>
-              <option>EUR (€)</option>
-              <option>GBP (£)</option>
-            </select>
-          </div>
-          <div className="col-12">
-            <div className="form-check form-switch">
-              <input className="form-check-input" type="checkbox" id="emailNotifications" defaultChecked />
-              <label className="form-check-label" htmlFor="emailNotifications">
-                Enable Email Notifications
-              </label>
-            </div>
-          </div>
-          <div className="col-12">
-            <div className="form-check form-switch">
-              <input className="form-check-input" type="checkbox" id="autoApprove" />
-              <label className="form-check-label" htmlFor="autoApprove">
-                Auto-approve Event Registrations
-              </label>
-            </div>
-          </div>
-          <div className="col-12">
-            <SoftBox display="flex" className="gap-3">
-              <SoftButton variant="gradient" color="primary">
-                Save Settings
-              </SoftButton>
-              <SoftButton variant="outline" color="secondary">
-                Reset to Default
-              </SoftButton>
-            </SoftBox>
+    <DataCard title="System Settings" subtitle="Configure platform settings">
+      <div className="row gy-4">
+        <div className="col-md-6">
+          <WowInput label="Organization Name" value="Incubation Platform" />
+        </div>
+        <div className="col-md-6">
+          <WowInput label="Contact Email" value="admin@incubation.com" type="email" />
+        </div>
+        <div className="col-md-6">
+          <WowInput label="Default Event Capacity" value="100" type="number" />
+        </div>
+        <div className="col-md-6">
+          <label className="form-label fw-bold">Currency</label>
+          <select className="form-select">
+            <option>USD ($)</option>
+            <option>EUR (€)</option>
+            <option>GBP (£)</option>
+          </select>
+        </div>
+        <div className="col-12">
+          <div className="form-check form-switch">
+            <input className="form-check-input" type="checkbox" id="emailNotifications" defaultChecked />
+            <label className="form-check-label" htmlFor="emailNotifications">
+              Enable Email Notifications
+            </label>
           </div>
         </div>
-      </SoftBox>
-    </SoftCard>
+        <div className="col-12">
+          <div className="form-check form-switch">
+            <input className="form-check-input" type="checkbox" id="autoApprove" />
+            <label className="form-check-label" htmlFor="autoApprove">
+              Auto-approve Event Registrations
+            </label>
+          </div>
+        </div>
+        <div className="col-12">
+          <div className="d-flex gap-3">
+            <WowButton variant="primary">
+              Save Settings
+            </WowButton>
+            <WowButton variant="secondary">
+              Reset to Default
+            </WowButton>
+          </div>
+        </div>
+      </div>
+    </DataCard>
   );
 
-  const tabs = [
-    { id: 'overview', label: 'Overview', icon: 'mdi:view-dashboard' },
-    { id: 'events', label: 'Events', icon: 'mdi:calendar-multiple' },
-    { id: 'users', label: 'Users', icon: 'mdi:account-group' },
-    { id: 'tickets', label: 'Tickets', icon: 'mdi:ticket' },
-    { id: 'analytics', label: 'Analytics', icon: 'mdi:chart-bar' },
-    { id: 'messages', label: 'Messages', icon: 'mdi:email' },
-    { id: 'settings', label: 'Settings', icon: 'mdi:cog' }
-  ];
-
   return (
-    <SoftBox>
-      <SoftBox display="flex" justifyContent="space-between" alignItems="center" className="mb-4">
-        <SoftTypography variant="h4" fontWeight="bold">
-          ⚙️ Admin Dashboard
-        </SoftTypography>
-      </SoftBox>
-
-      {/* Tabs */}
-      <SoftCard className="mb-4">
-        <SoftBox p={0}>
-          <ul className="nav nav-tabs border-bottom" role="tablist">
-            {tabs.map(tab => (
-              <li className="nav-item" key={tab.id}>
-                <button
-                  className={`nav-link ${activeTab === tab.id ? 'active' : ''}`}
-                  onClick={() => setActiveTab(tab.id)}
-                >
-                  <Icon icon={tab.icon} className="mr-2" />
-                  {tab.label}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </SoftBox>
-      </SoftCard>
+    <DashboardLayout
+      title="⚙️ Admin Dashboard"
+      subtitle="Manage events, users, and platform settings"
+    >
+      {/* Tab Navigation */}
+      <div className="col-12">
+        <TabNavigation
+          tabs={tabs}
+          activeTab={activeTab}
+          onTabChange={setActiveTab}
+          variant="pills"
+        />
+      </div>
 
       {/* Tab Content */}
-      <div className="tab-content">
+      <div className="col-12">
         {activeTab === 'overview' && renderOverview()}
         {activeTab === 'events' && renderEvents()}
         {activeTab === 'users' && renderUsers()}
@@ -651,7 +612,7 @@ const AdminDashboard: React.FC = () => {
         {activeTab === 'messages' && renderMessages()}
         {activeTab === 'settings' && renderSettings()}
       </div>
-    </SoftBox>
+    </DashboardLayout>
   );
 };
 
