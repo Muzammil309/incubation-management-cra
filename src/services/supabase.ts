@@ -1,13 +1,16 @@
 import { createClient } from '@supabase/supabase-js';
 // import { Database } from '../types/database';
 
-const supabaseUrl = process.env.REACT_APP_SUPABASE_URL!;
-const supabaseAnonKey = process.env.REACT_APP_SUPABASE_ANON_KEY!;
+const supabaseUrl = process.env.REACT_APP_SUPABASE_URL || 'https://placeholder.supabase.co';
+const supabaseAnonKey = process.env.REACT_APP_SUPABASE_ANON_KEY || 'placeholder-key';
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error('Missing Supabase environment variables');
-}
+// Check if Supabase is properly configured
+export const isSupabaseConfigured =
+  process.env.REACT_APP_SUPABASE_URL &&
+  process.env.REACT_APP_SUPABASE_ANON_KEY &&
+  process.env.REACT_APP_SUPABASE_URL !== 'https://placeholder.supabase.co';
 
+// Create Supabase client (will use placeholder values if not configured)
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
     autoRefreshToken: true,

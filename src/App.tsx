@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { isSupabaseConfigured } from './services/supabase';
 
 // Layout Components
 import WowdashLayout from './layouts/WowdashLayout';
@@ -56,6 +57,11 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
     );
   }
 
+  // If Supabase is not configured, allow access (demo mode)
+  if (!isSupabaseConfigured) {
+    return <>{children}</>;
+  }
+
   if (!user) {
     return <Navigate to="/auth/login" replace />;
   }
@@ -73,6 +79,11 @@ const PublicRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary-600"></div>
       </div>
     );
+  }
+
+  // If Supabase is not configured, redirect to dashboard (demo mode)
+  if (!isSupabaseConfigured) {
+    return <Navigate to="/dashboard" replace />;
   }
 
   if (user) {

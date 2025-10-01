@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User, Session } from '@supabase/supabase-js';
-import { auth, supabase } from '../services/supabase';
+import { auth, supabase, isSupabaseConfigured } from '../services/supabase';
 
 interface AuthContextType {
   user: User | null;
@@ -34,12 +34,24 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // If Supabase is not configured, skip authentication
+    if (!isSupabaseConfigured) {
+      console.warn('Supabase is not configured. Running in demo mode without authentication.');
+      setLoading(false);
+      return;
+    }
+
     // Get initial session
     const getInitialSession = async () => {
-      const { data: { session } } = await auth.getSession();
-      setSession(session);
-      setUser(session?.user ?? null);
-      setLoading(false);
+      try {
+        const { data: { session } } = await auth.getSession();
+        setSession(session);
+        setUser(session?.user ?? null);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error getting session:', error);
+        setLoading(false);
+      }
     };
 
     getInitialSession();
