@@ -1,218 +1,169 @@
 import React from 'react';
-import SoftCard from '../ui/SoftCard';
-import SoftButton from '../ui/SoftButton';
-import { 
-  DollarSign, 
-  Users, 
-  UserPlus, 
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
+import { Button } from '../ui/button';
+import {
+  DollarSign,
+  Users,
+  Rocket,
   TrendingUp,
   ArrowUp,
-  ArrowDown,
-  Rocket
+  Calendar,
+  Award,
+  Target,
+  Briefcase,
+  Plus
 } from 'lucide-react';
 
 const IncubationDashboard: React.FC = () => {
   return (
-    <div className="min-h-screen bg-background-default p-6">
-      {/* Top Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        {/* Today's Money */}
-        <SoftCard className="relative overflow-hidden">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-secondary-500 mb-1">Today's Money</p>
-              <div className="flex items-center">
-                <h3 className="text-2xl font-bold text-dark-700">$53,000</h3>
-                <div className="flex items-center ml-2 text-success-500">
-                  <ArrowUp className="h-4 w-4" />
-                  <span className="text-sm font-medium">+55%</span>
-                </div>
-              </div>
-            </div>
-            <div className="w-12 h-12 bg-gradient-primary rounded-xl flex items-center justify-center">
-              <DollarSign className="h-6 w-6 text-white" />
-            </div>
-          </div>
-        </SoftCard>
-
-        {/* Today's Users */}
-        <SoftCard className="relative overflow-hidden">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-secondary-500 mb-1">Today's Users</p>
-              <div className="flex items-center">
-                <h3 className="text-2xl font-bold text-dark-700">2,300</h3>
-                <div className="flex items-center ml-2 text-success-500">
-                  <ArrowUp className="h-4 w-4" />
-                  <span className="text-sm font-medium">+3%</span>
-                </div>
-              </div>
-            </div>
-            <div className="w-12 h-12 bg-gradient-primary rounded-xl flex items-center justify-center">
-              <Users className="h-6 w-6 text-white" />
-            </div>
-          </div>
-        </SoftCard>
-
-        {/* New Clients */}
-        <SoftCard className="relative overflow-hidden">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-secondary-500 mb-1">New Clients</p>
-              <div className="flex items-center">
-                <h3 className="text-2xl font-bold text-dark-700">+3,462</h3>
-                <div className="flex items-center ml-2 text-error-500">
-                  <ArrowDown className="h-4 w-4" />
-                  <span className="text-sm font-medium">-2%</span>
-                </div>
-              </div>
-            </div>
-            <div className="w-12 h-12 bg-gradient-info rounded-xl flex items-center justify-center">
-              <UserPlus className="h-6 w-6 text-white" />
-            </div>
-          </div>
-        </SoftCard>
-
-        {/* Sales */}
-        <SoftCard className="relative overflow-hidden">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-secondary-500 mb-1">Sales</p>
-              <div className="flex items-center">
-                <h3 className="text-2xl font-bold text-dark-700">$103,430</h3>
-                <div className="flex items-center ml-2 text-success-500">
-                  <ArrowUp className="h-4 w-4" />
-                  <span className="text-sm font-medium">+5%</span>
-                </div>
-              </div>
-            </div>
-            <div className="w-12 h-12 bg-gradient-success rounded-xl flex items-center justify-center">
-              <TrendingUp className="h-6 w-6 text-white" />
-            </div>
-          </div>
-        </SoftCard>
-      </div>
-
-      {/* Main Content Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-        {/* Build by developers card */}
-        <SoftCard>
-          <div className="mb-4">
-            <p className="text-sm font-medium text-secondary-500 mb-2">Build by developers</p>
-            <h3 className="text-xl font-bold text-dark-700 mb-3">Soft UI Dashboard</h3>
-            <p className="text-sm text-secondary-500 mb-6">
-              From colors, cards, typography to complex elements, you will find the full documentation.
-            </p>
-            <SoftButton variant="outline" size="sm">
-              Read More →
-            </SoftButton>
-          </div>
-        </SoftCard>
-
-        {/* Rocket Card */}
-        <SoftCard variant="gradient" gradientType="info" className="relative overflow-hidden">
-          <div className="relative z-10">
-            <div className="flex items-center justify-center mb-4">
-              <div className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center">
-                <Rocket className="h-10 w-10 text-white" />
-              </div>
-            </div>
-          </div>
-        </SoftCard>
-
-        {/* Work with the rockets */}
-        <SoftCard variant="gradient" gradientType="dark">
-          <h3 className="text-xl font-bold mb-3">Work with the rockets</h3>
-          <p className="text-sm opacity-90 mb-6">
-            Wealth creation is an evolutionarily recent positive-sum game. It is all about who take the opportunity first.
+    <div className="space-y-6">
+      {/* Page Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            Dashboard
+          </h1>
+          <p className="text-gray-500 dark:text-gray-400 mt-1">
+            Welcome back! Here's what's happening with your incubation program.
           </p>
-          <SoftButton variant="outline" size="sm" className="border-white text-white hover:bg-white hover:text-dark-700">
-            Read More →
-          </SoftButton>
-        </SoftCard>
+        </div>
+        <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
+          <Plus className="mr-2 h-4 w-4" />
+          Add Startup
+        </Button>
       </div>
 
-      {/* Bottom Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Sales Chart */}
-        <SoftCard variant="gradient" gradientType="dark" className="h-80">
-          <div className="h-full flex flex-col">
-            <div className="mb-6">
-              <h3 className="text-lg font-bold mb-2">Sales Overview</h3>
-              <div className="flex items-center text-sm opacity-90">
-                <ArrowUp className="h-4 w-4 mr-1" />
-                <span>4% more in 2021</span>
-              </div>
+      {/* Stats Cards */}
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        {/* Total Startups */}
+        <Card className="border-l-4 border-l-blue-600 hover:shadow-lg transition-shadow">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Startups</CardTitle>
+            <div className="h-10 w-10 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center">
+              <Rocket className="h-5 w-5 text-white" />
             </div>
-            
-            {/* Chart Area */}
-            <div className="flex-1 flex items-end justify-between px-4">
-              {[200, 300, 250, 400, 350, 450, 300, 380, 420, 350, 400, 300].map((height, index) => (
-                <div
-                  key={index}
-                  className="bg-white/30 rounded-t-lg"
-                  style={{ 
-                    height: `${(height / 450) * 100}%`,
-                    width: '20px'
-                  }}
-                />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">142</div>
+            <div className="flex items-center text-xs text-green-600 mt-1">
+              <ArrowUp className="h-3 w-3 mr-1" />
+              <span>+12% from last month</span>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Active Mentors */}
+        <Card className="border-l-4 border-l-purple-600 hover:shadow-lg transition-shadow">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Active Mentors</CardTitle>
+            <div className="h-10 w-10 rounded-full bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center">
+              <Users className="h-5 w-5 text-white" />
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">68</div>
+            <div className="flex items-center text-xs text-green-600 mt-1">
+              <ArrowUp className="h-3 w-3 mr-1" />
+              <span>+8% from last month</span>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Funding Raised */}
+        <Card className="border-l-4 border-l-green-600 hover:shadow-lg transition-shadow">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Funding Raised</CardTitle>
+            <div className="h-10 w-10 rounded-full bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center">
+              <DollarSign className="h-5 w-5 text-white" />
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">$8.4M</div>
+            <div className="flex items-center text-xs text-green-600 mt-1">
+              <ArrowUp className="h-3 w-3 mr-1" />
+              <span>+24% from last month</span>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Success Rate */}
+        <Card className="border-l-4 border-l-amber-600 hover:shadow-lg transition-shadow">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Success Rate</CardTitle>
+            <div className="h-10 w-10 rounded-full bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center">
+              <TrendingUp className="h-5 w-5 text-white" />
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">87%</div>
+            <div className="flex items-center text-xs text-green-600 mt-1">
+              <ArrowUp className="h-3 w-3 mr-1" />
+              <span>+3% from last month</span>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Recent Activity & Quick Actions */}
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {/* Recent Activity */}
+        <Card className="lg:col-span-2">
+          <CardHeader>
+            <CardTitle>Recent Activity</CardTitle>
+            <CardDescription>Latest updates from your incubation program</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {[
+                { icon: Rocket, color: 'blue', title: 'New Startup Onboarded', desc: 'TechVision AI joined the program', time: '2 hours ago' },
+                { icon: Award, color: 'green', title: 'Funding Milestone', desc: 'CloudSync raised $500K Series A', time: '5 hours ago' },
+                { icon: Calendar, color: 'purple', title: 'Upcoming Event', desc: 'Pitch Day scheduled for next week', time: '1 day ago' },
+                { icon: Users, color: 'amber', title: 'New Mentor', desc: 'Sarah Johnson joined as mentor', time: '2 days ago' },
+              ].map((activity, index) => (
+                <div key={index} className="flex items-start space-x-4 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                  <div className={`h-10 w-10 rounded-full bg-gradient-to-br from-${activity.color}-500 to-${activity.color}-600 flex items-center justify-center flex-shrink-0`}>
+                    <activity.icon className="h-5 w-5 text-white" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-gray-900 dark:text-white">{activity.title}</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">{activity.desc}</p>
+                    <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">{activity.time}</p>
+                  </div>
+                </div>
               ))}
             </div>
-            
-            {/* Chart Labels */}
-            <div className="flex justify-between text-xs opacity-70 mt-4">
-              <span>Apr</span>
-              <span>May</span>
-              <span>Jun</span>
-              <span>Jul</span>
-              <span>Aug</span>
-              <span>Sep</span>
-              <span>Oct</span>
-              <span>Nov</span>
-              <span>Dec</span>
-            </div>
-          </div>
-        </SoftCard>
+          </CardContent>
+        </Card>
 
-        {/* Sales Overview Line Chart */}
-        <SoftCard>
-          <div className="mb-6">
-            <h3 className="text-lg font-bold text-dark-700 mb-2">Sales Overview</h3>
-            <div className="flex items-center text-sm text-success-500">
-              <ArrowUp className="h-4 w-4 mr-1" />
-              <span>4% more in 2021</span>
-            </div>
-          </div>
-          
-          {/* Line Chart Area */}
-          <div className="h-48 relative">
-            <svg className="w-full h-full" viewBox="0 0 400 200">
-              {/* Grid lines */}
-              <defs>
-                <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-                  <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#e2e8f0" strokeWidth="1"/>
-                </pattern>
-              </defs>
-              <rect width="100%" height="100%" fill="url(#grid)" />
-              
-              {/* Line chart paths */}
-              <path
-                d="M 20 150 Q 80 120 120 100 T 200 80 T 280 60 T 360 40"
-                fill="none"
-                stroke="#17c1e8"
-                strokeWidth="3"
-                strokeLinecap="round"
-              />
-              <path
-                d="M 20 180 Q 80 160 120 140 T 200 120 T 280 100 T 360 80"
-                fill="none"
-                stroke="#8392ab"
-                strokeWidth="3"
-                strokeLinecap="round"
-              />
-            </svg>
-          </div>
-        </SoftCard>
+        {/* Quick Actions */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Quick Actions</CardTitle>
+            <CardDescription>Common tasks and shortcuts</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-2">
+            <Button className="w-full justify-start" variant="outline">
+              <Rocket className="mr-2 h-4 w-4" />
+              Add New Startup
+            </Button>
+            <Button className="w-full justify-start" variant="outline">
+              <Calendar className="mr-2 h-4 w-4" />
+              Schedule Event
+            </Button>
+            <Button className="w-full justify-start" variant="outline">
+              <Users className="mr-2 h-4 w-4" />
+              Invite Mentor
+            </Button>
+            <Button className="w-full justify-start" variant="outline">
+              <Briefcase className="mr-2 h-4 w-4" />
+              Review Applications
+            </Button>
+            <Button className="w-full justify-start" variant="outline">
+              <Target className="mr-2 h-4 w-4" />
+              Set Goals
+            </Button>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

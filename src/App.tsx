@@ -6,7 +6,7 @@ import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { isSupabaseConfigured } from './services/supabase';
 
 // Layout Components
-import WowdashLayout from './layouts/WowdashLayout';
+import ModernDashboardLayout from './layouts/ModernDashboardLayout';
 
 // Page Components
 import LoginPage from './pages/auth/LoginPage';
@@ -126,28 +126,28 @@ function App() {
               />
               
               {/* Protected Routes */}
-              <Route path="/" element={<ProtectedRoute><WowdashLayout><div /></WowdashLayout></ProtectedRoute>}>
+              <Route path="/" element={<ProtectedRoute><ModernDashboardLayout /></ProtectedRoute>}>
                 <Route index element={<Navigate to="/dashboard" replace />} />
-                <Route path="dashboard" element={<WowdashLayout><IncubationDashboard /></WowdashLayout>} />
-                <Route path="startups" element={<WowdashLayout><StartupsPage /></WowdashLayout>} />
-                <Route path="mentors" element={<WowdashLayout><MentorsPage /></WowdashLayout>} />
-                <Route path="analytics" element={<WowdashLayout><AnalyticsPage /></WowdashLayout>} />
-                <Route path="events" element={<WowdashLayout><EventsPage /></WowdashLayout>} />
-                <Route path="investments" element={<WowdashLayout><InvestmentsPage /></WowdashLayout>} />
-                <Route path="settings" element={<WowdashLayout><SettingsPage /></WowdashLayout>} />
+                <Route path="dashboard" element={<IncubationDashboard />} />
+                <Route path="startups" element={<StartupsPage />} />
+                <Route path="mentors" element={<MentorsPage />} />
+                <Route path="analytics" element={<AnalyticsPage />} />
+                <Route path="events" element={<EventsPage />} />
+                <Route path="investments" element={<InvestmentsPage />} />
+                <Route path="settings" element={<SettingsPage />} />
 
-                {/* New WowDash Pages */}
-                <Route path="applications" element={<WowdashLayout><ApplicationsPage /></WowdashLayout>} />
-                <Route path="resources" element={<WowdashLayout><ResourcesPage /></WowdashLayout>} />
-                <Route path="funding" element={<WowdashLayout><FundingPage /></WowdashLayout>} />
-                <Route path="performance" element={<WowdashLayout><PerformancePage /></WowdashLayout>} />
-                <Route path="documents" element={<WowdashLayout><DocumentsPage /></WowdashLayout>} />
-                <Route path="alumni" element={<WowdashLayout><AlumniPage /></WowdashLayout>} />
+                {/* New Pages */}
+                <Route path="applications" element={<ApplicationsPage />} />
+                <Route path="resources" element={<ResourcesPage />} />
+                <Route path="funding" element={<FundingPage />} />
+                <Route path="performance" element={<PerformancePage />} />
+                <Route path="documents" element={<DocumentsPage />} />
+                <Route path="alumni" element={<AlumniPage />} />
 
                 {/* Dashboard Pages */}
-                <Route path="attendee-dashboard" element={<WowdashLayout><AttendeeDashboard /></WowdashLayout>} />
-                <Route path="speaker-dashboard" element={<WowdashLayout><SpeakerDashboard /></WowdashLayout>} />
-                <Route path="admin-dashboard" element={<WowdashLayout><AdminDashboard /></WowdashLayout>} />
+                <Route path="attendee-dashboard" element={<AttendeeDashboard />} />
+                <Route path="speaker-dashboard" element={<SpeakerDashboard />} />
+                <Route path="admin-dashboard" element={<AdminDashboard />} />
               </Route>
 
               {/* Catch all route */}
