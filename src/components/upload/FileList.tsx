@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Icon } from '@iconify/react';
 import { supabase } from '../../lib/supabaseClient';
 import { useToast } from '../../hooks/useToast';
-import SoftButton from '../ui/SoftButton';
 
 interface FileItem {
   id: string;
@@ -31,13 +30,7 @@ const FileList: React.FC<FileListProps> = ({ files, onFileDeleted }) => {
     return { icon: 'mdi:file-document', color: 'text-neutral-500' };
   };
 
-  const formatFileSize = (bytes: number) => {
-    if (bytes === 0) return '0 Bytes';
-    const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
-  };
+  // Removed unused formatFileSize function
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);

@@ -49,7 +49,10 @@ const queryClient = new QueryClient({
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { user, loading } = useAuth();
 
-  if (loading) {
+  // Check if demo mode is explicitly enabled via environment variable
+  const isDemoMode = process.env.REACT_APP_DEMO_MODE === 'true' || !isSupabaseConfigured;
+
+  if (loading && !isDemoMode) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary-600"></div>
@@ -57,8 +60,8 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
     );
   }
 
-  // If Supabase is not configured, allow access (demo mode)
-  if (!isSupabaseConfigured) {
+  // If demo mode is enabled, allow access without authentication
+  if (isDemoMode) {
     return <>{children}</>;
   }
 
@@ -73,7 +76,10 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
 const PublicRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { user, loading } = useAuth();
 
-  if (loading) {
+  // Check if demo mode is explicitly enabled via environment variable
+  const isDemoMode = process.env.REACT_APP_DEMO_MODE === 'true' || !isSupabaseConfigured;
+
+  if (loading && !isDemoMode) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary-600"></div>
@@ -81,8 +87,8 @@ const PublicRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     );
   }
 
-  // If Supabase is not configured, redirect to dashboard (demo mode)
-  if (!isSupabaseConfigured) {
+  // If demo mode is enabled, redirect to dashboard
+  if (isDemoMode) {
     return <Navigate to="/dashboard" replace />;
   }
 

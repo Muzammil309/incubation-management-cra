@@ -138,25 +138,24 @@ const SpeakerDashboard: React.FC = () => {
     }
   ]);
 
-  // Fetch materials from Supabase on component mount
+  // Fetch materials from Supabase
   useEffect(() => {
+    const fetchMaterials = async () => {
+      try {
+        setLoadingMaterials(true);
+        // Fetch materials for the first session (or all sessions)
+        const sessionId = sessions[0]?.id || 'default-session';
+        const data = await materialService.getBySessionId(sessionId);
+        setMaterialsFromDB(data);
+      } catch (error: any) {
+        console.error('Failed to fetch materials:', error);
+        showError('Failed to load materials');
+      } finally {
+        setLoadingMaterials(false);
+      }
+    };
     fetchMaterials();
-  }, []);
-
-  const fetchMaterials = async () => {
-    try {
-      setLoadingMaterials(true);
-      // Fetch materials for the first session (or all sessions)
-      const sessionId = sessions[0]?.id || 'default-session';
-      const data = await materialService.getBySessionId(sessionId);
-      setMaterialsFromDB(data);
-    } catch (error: any) {
-      console.error('Failed to fetch materials:', error);
-      showError('Failed to load materials');
-    } finally {
-      setLoadingMaterials(false);
-    }
-  };
+  }, [sessions, showError]);
 
   const tabs = [
     { id: 'overview', label: 'Overview', icon: 'mdi:view-dashboard' },
@@ -173,13 +172,7 @@ const SpeakerDashboard: React.FC = () => {
     ));
   };
 
-  const handleUploadMaterial = () => {
-    alert('Upload material functionality');
-  };
-
-  const handleDeleteMaterial = (materialId: string) => {
-    setMaterials(materials.filter(m => m.id !== materialId));
-  };
+  // Removed unused handlers - functionality moved to components
 
   const renderOverview = () => (
     <>

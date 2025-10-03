@@ -34,9 +34,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // If Supabase is not configured, skip authentication
-    if (!isSupabaseConfigured) {
-      console.warn('Supabase is not configured. Running in demo mode without authentication.');
+    // Check if demo mode is explicitly enabled via environment variable
+    const isDemoMode = process.env.REACT_APP_DEMO_MODE === 'true' || !isSupabaseConfigured;
+
+    // If demo mode is enabled, skip authentication
+    if (isDemoMode) {
+      console.warn('Running in demo mode without authentication. Set REACT_APP_DEMO_MODE=false to enable authentication.');
       setLoading(false);
       return;
     }

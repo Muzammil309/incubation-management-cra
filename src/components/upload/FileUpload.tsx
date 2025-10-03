@@ -31,13 +31,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { showSuccess, showError } = useToast();
 
-  const getFileIcon = (fileType: string) => {
-    if (fileType.includes('pdf')) return 'mdi:file-pdf-box';
-    if (fileType.includes('powerpoint') || fileType.includes('presentation')) return 'mdi:file-powerpoint-box';
-    if (fileType.includes('word') || fileType.includes('document')) return 'mdi:file-word-box';
-    if (fileType.includes('image')) return 'mdi:file-image';
-    return 'mdi:file-document';
-  };
+  // Removed unused getFileIcon function
 
   const getFileExtension = (filename: string) => {
     return filename.split('.').pop()?.toUpperCase() || '';
@@ -78,7 +72,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
       // Simulate progress for better UX
       setUploadProgress(50);
 
-      const { data: uploadData, error: uploadError } = await supabase.storage
+      const { error: uploadError } = await supabase.storage
         .from('speaker-materials')
         .upload(filePath, file, {
           cacheControl: '3600',
