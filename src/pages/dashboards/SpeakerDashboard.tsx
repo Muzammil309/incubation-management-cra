@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Icon } from '@iconify/react';
 import {
   DashboardLayout,
@@ -138,24 +138,26 @@ const SpeakerDashboard: React.FC = () => {
     }
   ]);
 
-  // Fetch materials from Supabase
-  useEffect(() => {
-    const fetchMaterials = async () => {
-      try {
-        setLoadingMaterials(true);
-        // Fetch materials for the first session (or all sessions)
-        const sessionId = sessions[0]?.id || 'default-session';
-        const data = await materialService.getBySessionId(sessionId);
-        setMaterialsFromDB(data);
-      } catch (error: any) {
-        console.error('Failed to fetch materials:', error);
-        showError('Failed to load materials');
-      } finally {
-        setLoadingMaterials(false);
-      }
-    };
-    fetchMaterials();
+  // Fetch materials from Supabase - defined with useCallback for component-wide access
+  const fetchMaterials = useCallback(async () => {
+    try {
+      setLoadingMaterials(true);
+      // Fetch materials for the first session (or all sessions)
+      const sessionId = sessions[0]?.id || 'default-session';
+      const data = await materialService.getBySessionId(sessionId);
+      setMaterialsFromDB(data);
+    } catch (error: any) {
+      console.error('Failed to fetch materials:', error);
+      showError('Failed to load materials');
+    } finally {
+      setLoadingMaterials(false);
+    }
   }, [sessions, showError]);
+
+  // Call fetchMaterials on component mount
+  useEffect(() => {
+    fetchMaterials();
+  }, [fetchMaterials]);
 
   const tabs = [
     { id: 'overview', label: 'Overview', icon: 'mdi:view-dashboard' },
